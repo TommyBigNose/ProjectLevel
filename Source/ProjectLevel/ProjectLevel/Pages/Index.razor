@@ -1,6 +1,7 @@
 ﻿@page "/"
 
 @using System.Timers;
+@using ProjectLevel.Contracts.v1
 
 <PageTitle>Index</PageTitle>
 
@@ -33,7 +34,7 @@ Timer Bar!
 
         currentTimer++;
 
-        if(currentTimer >= 1000.0f)
+        if(currentTimer >= Constants.ActionBarMax)
         {
             currentTimer = 0.0f;
         }

@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ProjectLevel.Contracts\ProjectLevel.Contracts.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="v1\Implementations\" />
-  </ItemGroup>
-
 </Project>

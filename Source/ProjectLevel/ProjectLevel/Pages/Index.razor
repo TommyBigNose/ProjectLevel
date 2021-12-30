@@ -1,0 +1,46 @@
+﻿@page "/"
+
+@using System.Timers;
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, from Project Level!</h1>
+
+Your current champion info:
+<br />
+Beep boop stats go here
+<br />
+<br />
+Timer Bar!
+<br />
+<progress id="progEnemy" value="@currentTimer" max="1000.0"></progress>
+
+@code {
+    Timer timer;
+    float currentTimer = 0.0f;
+
+    protected override void OnInitialized()
+    {
+        timer = new Timer();
+        timer.Interval = 100;
+        timer.Elapsed += TimerOnElapsed;
+        timer.Start();
+    }
+
+    private void TimerOnElapsed(object sender, ElapsedEventArgs e)
+    {
+        base.InvokeAsync(StateHasChanged);
+
+        currentTimer++;
+
+        if(currentTimer >= 1000.0f)
+        {
+            currentTimer = 0.0f;
+        }
+    }
+
+    public void Dispose()
+    {
+        timer.Dispose();
+    }
+}

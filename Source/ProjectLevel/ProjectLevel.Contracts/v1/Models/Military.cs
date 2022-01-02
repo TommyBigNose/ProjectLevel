@@ -106,5 +106,32 @@ namespace ProjectLevel.Contracts.v1.Models
 					break;
 			}
 		}
+
+		public int RequiredGoldForNewUnit(MilitaryType militaryType)
+		{
+			return militaryType switch
+			{
+				MilitaryType.Melee => _meleeUnitCount * Constants.GoldPerLevelCost,
+				MilitaryType.Ranged => _rangedUnitCount * Constants.GoldPerLevelCost,
+				MilitaryType.Siege => _siegeUnitCount * Constants.GoldPerLevelCost,
+				_ => 0,
+			};
+		}
+
+		public void UpgradeUnitCount(MilitaryType militaryType)
+		{
+			switch (militaryType)
+			{
+				case MilitaryType.Melee:
+					_meleeUnitCount++;
+					break;
+				case MilitaryType.Ranged:
+					_rangedUnitCount++;
+					break;
+				case MilitaryType.Siege:
+					_siegeUnitCount++;
+					break;
+			}
+		}
 	}
 }

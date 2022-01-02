@@ -23,6 +23,8 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		int GetMilitaryDamage(MilitaryType militaryType);
 		bool CanUpgradeMilitaryLevel(MilitaryType militaryType);
 		void UpgradeMilitaryLevel(MilitaryType militaryType);
+		bool CanUpgradeMilitaryUnitCount(MilitaryType militaryType);
+		void UpgradeMilitaryUnitCount(MilitaryType militaryType);
 		float GetMilitaryActionBarValue(MilitaryType militaryType);
 
 		void TriggerAllActionBars();

@@ -22,7 +22,7 @@ Gold Income Rate: <label id="lblGoldLevel">@game.GetGoldIncomeRate()</label>
 <br />
 Gold Action: <progress id="progGold" value="@game.GetGoldActionBarValue()" max="@Constants.ActionBarMax"></progress>
 <br />
-<button class="btn btn-primary" @onclick="UpgradeGoldLevel" disabled="@ShouldButtonBeClickable(game.CanUpgradeGoldLevel)">Upgrade Economy!</button>
+<button class="btn btn-primary" style="background-color:yellow; color:black;" @onclick="UpgradeGoldLevel" disabled="@ShouldButtonBeClickable(game.CanUpgradeGoldLevel)">Upgrade Economy!</button>
 <br />
 <hr />
 
@@ -34,7 +34,8 @@ Melee Damage: <label id="lblMeleeDamage">@game.GetMilitaryDamage(Constants.Milit
 <br />
 Melee Action: <progress id="progMelee" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Melee)" max="@Constants.ActionBarMax"></progress>
 <br />
-<button class="btn btn-primary" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Melee))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Melee))">Upgrade Melee!</button>
+<button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => UpgradeMilitaryUnitCount(Constants.MilitaryType.Melee))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryUnitCount(Constants.MilitaryType.Melee))">Buy Melee Unit!</button>
+<button class="btn btn-primary" style="background-color:blue; color:white;" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Melee))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Melee))">Upgrade Melee!</button>
 <br />
 <hr />
 
@@ -46,7 +47,8 @@ Ranged Damage: <label id="lblRangedDamage">@game.GetMilitaryDamage(Constants.Mil
 <br />
 Ranged Action: <progress id="progRanged" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Ranged)" max="@Constants.ActionBarMax"></progress>
 <br />
-<button class="btn btn-primary" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Ranged))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Ranged))">Upgrade Ranged!</button>
+<button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => UpgradeMilitaryUnitCount(Constants.MilitaryType.Ranged))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryUnitCount(Constants.MilitaryType.Ranged))">Buy Ranged Unit!</button>
+<button class="btn btn-primary" style="background-color:blue; color:white;" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Ranged))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Ranged))">Upgrade Ranged!</button>
 <br />
 <hr />
 
@@ -58,7 +60,8 @@ Siege Damage: <label id="lblSiegeDamage">@game.GetMilitaryDamage(Constants.Milit
 <br />
 Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Siege)" max="@Constants.ActionBarMax"></progress>
 <br />
-<button class="btn btn-primary" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Siege))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Siege))">Upgrade Siege!</button>
+<button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => UpgradeMilitaryUnitCount(Constants.MilitaryType.Siege))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryUnitCount(Constants.MilitaryType.Siege))">Buy Siege Unit!</button>
+<button class="btn btn-primary" style="background-color:blue; color:white;" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Siege))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Siege))">Upgrade Siege!</button>
 <br />
 <hr />
 
@@ -76,6 +79,12 @@ Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Co
     private void UpgradeMilitaryLevel(Constants.MilitaryType militaryType)
     {
         CommandUpgradeMilitaryLevel command = new CommandUpgradeMilitaryLevel(game, militaryType);
+        commandManager.Invoke(command);
+    }
+
+    private void UpgradeMilitaryUnitCount(Constants.MilitaryType militaryType)
+    {
+        CommandUpgradeMilitaryUnitCount command = new CommandUpgradeMilitaryUnitCount(game, militaryType);
         commandManager.Invoke(command);
     }
 

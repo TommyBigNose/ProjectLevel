@@ -84,6 +84,17 @@ namespace ProjectLevel.Services.v1.Implementations
 			_civilization.Military.UpgradeUnitLevel(militaryType);
 		}
 
+		public bool CanUpgradeMilitaryUnitCount(MilitaryType militaryType)
+		{
+			return _civilization.Economy.Gold >= _civilization.Military.RequiredGoldForNewUnit(militaryType);
+		}
+
+		public void UpgradeMilitaryUnitCount(MilitaryType militaryType)
+		{
+			_civilization.Economy.Gold -= _civilization.Military.RequiredGoldForNewUnit(militaryType);
+			_civilization.Military.UpgradeUnitCount(militaryType);
+		}
+
 		public void TriggerAllActionBars()
 		{
 			_civilization.TriggerAllActionBars();

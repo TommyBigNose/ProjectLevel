@@ -25,6 +25,17 @@ namespace ProjectLevel.Contracts.v1.Models
 			Gold += GoldLevel;
 			GoldActionBar.ResetActionBar();
 		}
+
+		public int RequiredGoldToLevelUp()
+		{
+			return GoldLevel * Constants.GoldPerLevelCost;
+		}
+
+		public bool CanUpgradeGoldLevel()
+		{
+			return (Gold >= RequiredGoldToLevelUp());
+		}
+
 		//public int GetGold()
 		//{
 		//	return _gold;
@@ -37,6 +48,7 @@ namespace ProjectLevel.Contracts.v1.Models
 
 		public void UpgradeGoldLevel()
 		{
+			Gold -= RequiredGoldToLevelUp();
 			GoldLevel++;
 		}
 

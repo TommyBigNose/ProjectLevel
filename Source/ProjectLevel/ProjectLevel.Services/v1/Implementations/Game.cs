@@ -14,24 +14,13 @@ namespace ProjectLevel.Services.v1.Implementations
 	{
 		private readonly IDataSource _dataSource;
 		private Civilization _civilization;
-		//private CommandManager _commandManager;
 
 		public Game(IDataSource dataSource)
 		{
 			_dataSource = dataSource;
 
 			_civilization = new Civilization();
-			//_commandManager = new CommandManager();
 		}
-
-		//public ICivilization GetCivilization()
-		//{
-		//	return _civilization;
-		//}
-		//public Civilization GetCivilization()
-		//{
-		//	return _civilization;
-		//}
 
 		public int GetGold()
 		{
@@ -42,6 +31,27 @@ namespace ProjectLevel.Services.v1.Implementations
 		{
 			return _civilization.Economy.GoldLevel;
 		}
+
+		public int RequiredGoldToLevelUp()
+		{
+			return _civilization.Economy.RequiredGoldToLevelUp();
+		}
+
+		public bool CanUpgradeGoldLevel()
+		{
+			return _civilization.Economy.CanUpgradeGoldLevel();
+		}
+
+		public void UpgradeGoldLevel()
+		{
+			_civilization.Economy.UpgradeGoldLevel();
+		}
+
+		public float GetGoldActionBarValue()
+		{
+			return _civilization.Economy.GoldActionBar.Value;
+		}
+
 
 		public int GetMilitaryUnitCount(MilitaryType militaryType)
 		{
@@ -56,6 +66,22 @@ namespace ProjectLevel.Services.v1.Implementations
 		public int GetMilitaryDamage(MilitaryType militaryType)
 		{
 			return _civilization.Military.GetUnitDamage(militaryType);
+		}
+
+		public float GetMilitaryActionBarValue(MilitaryType militaryType)
+		{
+			return _civilization.Military.GetUnitActionBar(militaryType).Value;
+		}
+
+		public bool CanUpgradeMilitaryLevel(MilitaryType militaryType)
+		{
+			return _civilization.Economy.Gold >= _civilization.Military.RequiredGoldToLevelUp(militaryType);
+		}
+
+		public void UpgradeMilitaryLevel(MilitaryType militaryType)
+		{
+			_civilization.Economy.Gold -= _civilization.Military.RequiredGoldToLevelUp(militaryType);
+			_civilization.Military.UpgradeUnitLevel(militaryType);
 		}
 
 		public void TriggerAllActionBars()
@@ -75,15 +101,6 @@ namespace ProjectLevel.Services.v1.Implementations
 				}
 			}
 		}
-
-		public float GetGoldActionBarValue()
-		{
-			return _civilization.Economy.GoldActionBar.Value;
-		}
-
-		public float GetMilitaryActionBarValue(MilitaryType militaryType)
-		{
-			return _civilization.Military.GetUnitActionBar(militaryType).Value;
-		}
+		
 	}
 }

@@ -51,9 +51,9 @@ namespace ProjectLevel.Contracts.v1.Models
 		{
 			return militaryType switch
 			{
-				MilitaryType.Melee => _meleeUnitCount,
-				MilitaryType.Ranged => _rangedUnitCount,
-				MilitaryType.Siege => _siegeUnitCount,
+				MilitaryType.Melee => _meleeLevel,
+				MilitaryType.Ranged => _rangedLevel,
+				MilitaryType.Siege => _siegeLevel,
 				_ => 0,
 			};
 		}
@@ -77,6 +77,17 @@ namespace ProjectLevel.Contracts.v1.Models
 				MilitaryType.Ranged => RangedActionBar,
 				MilitaryType.Siege => SiegeActionBar,
 				_ => new ActionBar(),
+			};
+		}
+
+		public int RequiredGoldToLevelUp(MilitaryType militaryType)
+		{
+			return militaryType switch
+			{
+				MilitaryType.Melee => _meleeLevel * Constants.GoldPerLevelCost,
+				MilitaryType.Ranged => _rangedLevel * Constants.GoldPerLevelCost,
+				MilitaryType.Siege => _siegeLevel * Constants.GoldPerLevelCost,
+				_ => 0,
 			};
 		}
 

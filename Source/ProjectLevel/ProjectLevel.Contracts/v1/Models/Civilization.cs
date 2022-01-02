@@ -46,10 +46,10 @@ namespace ProjectLevel.Contracts.v1.Models
 		//	return _goldLevel;
 		//}
 
-		public void UpgradeGoldLevel()
-		{
-			Economy.UpgradeGoldLevel();
-		}
+		//public void UpgradeGoldLevel()
+		//{
+		//	Economy.UpgradeGoldLevel();
+		//}
 		#endregion
 
 		#region Military

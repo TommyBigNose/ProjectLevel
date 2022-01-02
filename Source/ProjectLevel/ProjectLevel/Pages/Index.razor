@@ -5,9 +5,8 @@
 @using ProjectLevel.Contracts.v1.Interfaces
 @using ProjectLevel.Contracts.v1.Models
 @using ProjectLevel.Services.v1.Implementations
-@using ProjectLevel.Contracts.v1.Models
 @inject ProjectLevel.Contracts.v1.Interfaces.IGame game
-@*@inject ProjectLevel.Services.v1.Implementations.Game game*@
+@inject ProjectLevel.Services.v1.Implementations.CommandManager commandManager
 
 <PageTitle>Index</PageTitle>
 
@@ -16,15 +15,14 @@
 Your current Civilization info:
 <br />
 <hr />
-@*<progress id="progMelee" value="@timerMelee" max="1000.0"></progress>
-<progress id="progRanged" value="@timerRanged" max="1000.0"></progress>
-<progress id="progSiege" value="@timerSiege" max="1000.0"></progress>*@
 
 Gold: <label id="lblGold">@game.GetGold()</label>
 <br />
 Gold Income Rate: <label id="lblGoldLevel">@game.GetGoldIncomeRate()</label>
 <br />
 Gold Action: <progress id="progGold" value="@game.GetGoldActionBarValue()" max="@Constants.ActionBarMax"></progress>
+<br />
+<button class="btn btn-primary" @onclick="UpgradeGoldLevel" disabled="@ShouldButtonBeClickable(game.CanUpgradeGoldLevel)">Upgrade Economy!</button>
 <br />
 <hr />
 
@@ -36,6 +34,8 @@ Melee Damage: <label id="lblMeleeDamage">@game.GetMilitaryDamage(Constants.Milit
 <br />
 Melee Action: <progress id="progMelee" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Melee)" max="@Constants.ActionBarMax"></progress>
 <br />
+<button class="btn btn-primary" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Melee))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Melee))">Upgrade Melee!</button>
+<br />
 <hr />
 
 Ranged Unit Count: <label id="lblRangedUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Ranged)</label>
@@ -45,6 +45,8 @@ Ranged Level: <label id="lblRangedLevel">@game.GetMilitaryLevel(Constants.Milita
 Ranged Damage: <label id="lblRangedDamage">@game.GetMilitaryDamage(Constants.MilitaryType.Ranged)</label>
 <br />
 Ranged Action: <progress id="progRanged" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Ranged)" max="@Constants.ActionBarMax"></progress>
+<br />
+<button class="btn btn-primary" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Ranged))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Ranged))">Upgrade Ranged!</button>
 <br />
 <hr />
 
@@ -56,18 +58,33 @@ Siege Damage: <label id="lblSiegeDamage">@game.GetMilitaryDamage(Constants.Milit
 <br />
 Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Siege)" max="@Constants.ActionBarMax"></progress>
 <br />
+<button class="btn btn-primary" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Siege))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Siege))">Upgrade Siege!</button>
+<br />
 <hr />
 
 
 
 
 @code {
+
+    private void UpgradeGoldLevel()
+    {
+        CommandUpgradeGoldLevel command = new CommandUpgradeGoldLevel(game);
+        commandManager.Invoke(command);
+    }
+
+    private void UpgradeMilitaryLevel(Constants.MilitaryType militaryType)
+    {
+        CommandUpgradeMilitaryLevel command = new CommandUpgradeMilitaryLevel(game, militaryType);
+        commandManager.Invoke(command);
+    }
+
+    private bool ShouldButtonBeClickable(Func<bool> func)
+    {
+        return !func.Invoke();
+    }
+
     Timer timer;
-    //float timerMelee = 0.0f;
-    //float timerRanged = 0.0f;
-    //float timerSiege = 0.0f;
-
-
 
     protected override void OnInitialized()
     {
@@ -82,16 +99,6 @@ Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Co
         base.InvokeAsync(StateHasChanged);
 
         game.TriggerAllActionBars();
-        //timerMelee = game.GetCivilization().Military.MeleeActionBar.Value;
-        //timerRanged =game.GetCivilization().Military.RangedActionBar.Value;
-        //timerSiege = game.GetCivilization().Military.SiegeActionBar.Value;
-
-        //currentTimer++;
-
-        //if(currentTimer >= Constants.ActionBarMax)
-        //{
-        //    currentTimer = 0.0f;
-        //}
     }
 
     public void Dispose()

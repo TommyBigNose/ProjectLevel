@@ -13,11 +13,20 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		//Civilization GetCivilization();
 		int GetGold();
 		int GetGoldIncomeRate();
+		int RequiredGoldToLevelUp();
+		bool CanUpgradeGoldLevel();
+		void UpgradeGoldLevel();
+		float GetGoldActionBarValue();
+
 		int GetMilitaryUnitCount(MilitaryType militaryType);
 		int GetMilitaryLevel(MilitaryType militaryType);
 		int GetMilitaryDamage(MilitaryType militaryType);
-		void TriggerAllActionBars();
-		float GetGoldActionBarValue();
+		bool CanUpgradeMilitaryLevel(MilitaryType militaryType);
+		void UpgradeMilitaryLevel(MilitaryType militaryType);
 		float GetMilitaryActionBarValue(MilitaryType militaryType);
+
+		void TriggerAllActionBars();
+		
+		
 	}
 }

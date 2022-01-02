@@ -10,6 +10,5 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 	{
 		void Execute();
 		bool CanExecute();
-		void Undo();
 	}
 }

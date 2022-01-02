@@ -25,7 +25,7 @@ namespace ProjectLevel.Services.v1.Implementations
 			if (commands.Count > 0)
 			{
 				ICommand command = commands.Pop();
-				command.Undo();
+				//command.Undo();
 			}
 		}
 	}

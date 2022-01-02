@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
 
-namespace ProjectLevel.Services.v1.Models
+namespace ProjectLevel.Contracts.v1.Models
 {
 	public class ActionBar
 	{

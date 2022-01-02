@@ -2,23 +2,47 @@
 
 @using System.Timers;
 @using ProjectLevel.Contracts.v1
+@using ProjectLevel.Contracts.v1.Interfaces
+@using ProjectLevel.Contracts.v1.Models
+@using ProjectLevel.Services.v1.Implementations
+@using ProjectLevel.Contracts.v1.Models
+@inject ProjectLevel.Contracts.v1.Interfaces.IGame game
+@*@inject ProjectLevel.Services.v1.Implementations.Game game*@
 
 <PageTitle>Index</PageTitle>
 
 <h1>Hello, from Project Level!</h1>
 
-Your current champion info:
+Your current Civilization info:
 <br />
 Beep boop stats go here
 <br />
 <br />
 Timer Bar!
 <br />
-<progress id="progEnemy" value="@currentTimer" max="1000.0"></progress>
+@*<progress id="progMelee" value="@timerMelee" max="1000.0"></progress>
+<progress id="progRanged" value="@timerRanged" max="1000.0"></progress>
+<progress id="progSiege" value="@timerSiege" max="1000.0"></progress>*@
+
+Melee Unit Count: <label id="meleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Melee)</label>
+<br />
+Ranged Unit Count: <label id="meleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Ranged)</label>
+<br />
+Siege Unit Count: <label id="meleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Siege)</label>
+<br />
+<progress id="progMelee" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Melee)" max="@Constants.ActionBarMax"></progress>
+<br />
+<progress id="progRanged" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Ranged)" max="@Constants.ActionBarMax"></progress>
+<br />
+<progress id="progSiege" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Siege)" max="@Constants.ActionBarMax"></progress>
 
 @code {
     Timer timer;
-    float currentTimer = 0.0f;
+    //float timerMelee = 0.0f;
+    //float timerRanged = 0.0f;
+    //float timerSiege = 0.0f;
+
+
 
     protected override void OnInitialized()
     {
@@ -32,12 +56,17 @@ Timer Bar!
     {
         base.InvokeAsync(StateHasChanged);
 
-        currentTimer++;
+        game.TriggerAllActionBars();
+        //timerMelee = game.GetCivilization().Military.MeleeActionBar.Value;
+        //timerRanged =game.GetCivilization().Military.RangedActionBar.Value;
+        //timerSiege = game.GetCivilization().Military.SiegeActionBar.Value;
 
-        if(currentTimer >= Constants.ActionBarMax)
-        {
-            currentTimer = 0.0f;
-        }
+        //currentTimer++;
+
+        //if(currentTimer >= Constants.ActionBarMax)
+        //{
+        //    currentTimer = 0.0f;
+        //}
     }
 
     public void Dispose()

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using ProjectLevel.Services.v1.Models;
+using ProjectLevel.Contracts.v1.Models;
 using static ProjectLevel.Contracts.v1.Constants;
 
 namespace ProjectLevel.Tests.Unit.v1.Implementations

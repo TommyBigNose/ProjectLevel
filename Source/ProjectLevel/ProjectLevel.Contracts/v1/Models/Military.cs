@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProjectLevel.Contracts.v1.Interfaces;
-using ProjectLevel.Services.v1.Models;
 using static ProjectLevel.Contracts.v1.Constants;
 
-namespace ProjectLevel.Services.v1.Implementations
+namespace ProjectLevel.Contracts.v1.Models
 {
-	public class Civilization : ICivilization
+	public class Military
 	{
-		private int _gold;
-		private int _goldLevel;
-		public Economy Economy { get; set; }
-
 		private int _meleeUnitCount;
 		private int _rangedUnitCount;
 		private int _siegeUnitCount;
@@ -27,32 +21,21 @@ namespace ProjectLevel.Services.v1.Implementations
 		public ActionBar RangedActionBar { get; set; }
 		public ActionBar SiegeActionBar { get; set; }
 
-		public Civilization()
+		public Military()
 		{
-			Economy = new Economy();
+			_meleeUnitCount = 1;
+			_rangedUnitCount = 0;
+			_siegeUnitCount = 0;
+
+			_meleeLevel = 0;
+			_rangedLevel = 0;
+			_siegeLevel = 0;
+
 			MeleeActionBar = new ActionBar();
 			RangedActionBar = new ActionBar();
 			SiegeActionBar = new ActionBar();
 		}
 
-		#region Economy
-		//public int GetGold()
-		//{
-		//	return _gold;
-		//}
-
-		//public int GetGoldIncomeRate()
-		//{
-		//	return _goldLevel;
-		//}
-
-		public void UpgradeGoldLevel()
-		{
-			Economy.GoldLevel++;
-		}
-		#endregion
-
-		#region Military
 		public int GetUnitCount(MilitaryType militaryType)
 		{
 			return militaryType switch
@@ -63,6 +46,18 @@ namespace ProjectLevel.Services.v1.Implementations
 				_ => 0,
 			};
 		}
+
+		public int GetUnitLevel(MilitaryType militaryType)
+		{
+			return militaryType switch
+			{
+				MilitaryType.Melee => _meleeUnitCount,
+				MilitaryType.Ranged => _rangedUnitCount,
+				MilitaryType.Siege => _siegeUnitCount,
+				_ => 0,
+			};
+		}
+
 		public int GetUnitDamage(MilitaryType militaryType)
 		{
 			return militaryType switch
@@ -74,16 +69,16 @@ namespace ProjectLevel.Services.v1.Implementations
 			};
 		}
 
-		//public ActionBar GetUnitActionBar(MilitaryType militaryType)
-		//{
-		//	return militaryType switch
-		//	{
-		//		MilitaryType.Melee => _meleeActionBar,
-		//		MilitaryType.Ranged => _rangedActionBar,
-		//		MilitaryType.Siege => _siegeActionBar,
-		//		_ => new ActionBar(),
-		//	};
-		//}
+		public ActionBar GetUnitActionBar(MilitaryType militaryType)
+		{
+			return militaryType switch
+			{
+				MilitaryType.Melee => MeleeActionBar,
+				MilitaryType.Ranged => RangedActionBar,
+				MilitaryType.Siege => SiegeActionBar,
+				_ => new ActionBar(),
+			};
+		}
 
 		public void UpgradeUnitLevel(MilitaryType militaryType)
 		{
@@ -100,6 +95,5 @@ namespace ProjectLevel.Services.v1.Implementations
 					break;
 			}
 		}
-		#endregion
 	}
 }

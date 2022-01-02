@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjectLevel.Contracts.v1.Interfaces;
 
-namespace ProjectLevel.Services.v1.Implementations
+namespace ProjectLevel.Contracts.v1.Models
 {
 	public class Economy
 	{
@@ -32,9 +32,9 @@ namespace ProjectLevel.Services.v1.Implementations
 		//	return _goldLevel;
 		//}
 
-		//public void UpgradeGoldLevel()
-		//{
-		//	_goldLevel++;
-		//}
+		public void UpgradeGoldLevel()
+		{
+			GoldLevel++;
+		}
 	}
 }

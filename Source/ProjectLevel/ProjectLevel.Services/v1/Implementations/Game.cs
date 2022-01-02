@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
 using ProjectLevel.Contracts.v1.Models;
 using static ProjectLevel.Contracts.v1.Constants;
@@ -32,6 +33,16 @@ namespace ProjectLevel.Services.v1.Implementations
 		//	return _civilization;
 		//}
 
+		public int GetGold()
+		{
+			return _civilization.Economy.Gold;
+		}
+
+		public int GetGoldIncomeRate()
+		{
+			return _civilization.Economy.GoldLevel;
+		}
+
 		public int GetMilitaryUnitCount(MilitaryType militaryType)
 		{
 			return _civilization.Military.GetUnitCount(militaryType);
@@ -49,14 +60,30 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public void TriggerAllActionBars()
 		{
-			_civilization.TriggerMilitaryActionBars();
+			_civilization.TriggerAllActionBars();
+			if(_civilization.Economy.GoldActionBar.IsReady())
+			{
+				_civilization.Economy.RecieveGoldIncome();
+			}
+
+			foreach(MilitaryType militaryType in Enum.GetValues(typeof(MilitaryType)))
+			{
+				var actionBar = _civilization.Military.GetUnitActionBar(militaryType);
+				if (actionBar.IsReady())
+				{
+					actionBar.ResetActionBar();
+				}
+			}
+		}
+
+		public float GetGoldActionBarValue()
+		{
+			return _civilization.Economy.GoldActionBar.Value;
 		}
 
 		public float GetMilitaryActionBarValue(MilitaryType militaryType)
 		{
 			return _civilization.Military.GetUnitActionBar(militaryType).Value;
 		}
-		
-		
 	}
 }

@@ -11,16 +11,19 @@ namespace ProjectLevel.Contracts.v1.Models
 	{
 		public int Gold { get; set; }
 		public int GoldLevel { get; set; }
+		public ActionBar GoldActionBar { get; set; }
 
 		public Economy()
 		{
 			Gold = 0;
 			GoldLevel = 1;
+			GoldActionBar = new ActionBar();
 		}
 
 		public void RecieveGoldIncome()
 		{
 			Gold += GoldLevel;
+			GoldActionBar.ResetActionBar();
 		}
 		//public int GetGold()
 		//{
@@ -36,5 +39,6 @@ namespace ProjectLevel.Contracts.v1.Models
 		{
 			GoldLevel++;
 		}
+
 	}
 }

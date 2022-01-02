@@ -11,10 +11,13 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 	public interface IGame
 	{
 		//Civilization GetCivilization();
+		int GetGold();
+		int GetGoldIncomeRate();
 		int GetMilitaryUnitCount(MilitaryType militaryType);
 		int GetMilitaryLevel(MilitaryType militaryType);
 		int GetMilitaryDamage(MilitaryType militaryType);
 		void TriggerAllActionBars();
+		float GetGoldActionBarValue();
 		float GetMilitaryActionBarValue(MilitaryType militaryType);
 	}
 }

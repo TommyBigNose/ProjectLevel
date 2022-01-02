@@ -15,26 +15,51 @@
 
 Your current Civilization info:
 <br />
-Beep boop stats go here
-<br />
-<br />
-Timer Bar!
-<br />
+<hr />
 @*<progress id="progMelee" value="@timerMelee" max="1000.0"></progress>
 <progress id="progRanged" value="@timerRanged" max="1000.0"></progress>
 <progress id="progSiege" value="@timerSiege" max="1000.0"></progress>*@
 
-Melee Unit Count: <label id="meleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Melee)</label>
+Gold: <label id="lblGold">@game.GetGold()</label>
 <br />
-Ranged Unit Count: <label id="meleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Ranged)</label>
+Gold Income Rate: <label id="lblGoldLevel">@game.GetGoldIncomeRate()</label>
 <br />
-Siege Unit Count: <label id="meleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Siege)</label>
+Gold Action: <progress id="progGold" value="@game.GetGoldActionBarValue()" max="@Constants.ActionBarMax"></progress>
 <br />
-<progress id="progMelee" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Melee)" max="@Constants.ActionBarMax"></progress>
+<hr />
+
+Melee Unit Count: <label id="lblMeleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Melee)</label>
 <br />
-<progress id="progRanged" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Ranged)" max="@Constants.ActionBarMax"></progress>
+Melee Level: <label id="lblMeleeLevel">@game.GetMilitaryLevel(Constants.MilitaryType.Melee)</label>
 <br />
-<progress id="progSiege" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Siege)" max="@Constants.ActionBarMax"></progress>
+Melee Damage: <label id="lblMeleeDamage">@game.GetMilitaryDamage(Constants.MilitaryType.Melee)</label>
+<br />
+Melee Action: <progress id="progMelee" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Melee)" max="@Constants.ActionBarMax"></progress>
+<br />
+<hr />
+
+Ranged Unit Count: <label id="lblRangedUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Ranged)</label>
+<br />
+Ranged Level: <label id="lblRangedLevel">@game.GetMilitaryLevel(Constants.MilitaryType.Ranged)</label>
+<br />
+Ranged Damage: <label id="lblRangedDamage">@game.GetMilitaryDamage(Constants.MilitaryType.Ranged)</label>
+<br />
+Ranged Action: <progress id="progRanged" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Ranged)" max="@Constants.ActionBarMax"></progress>
+<br />
+<hr />
+
+Siege Unit Count: <label id="lblSiegeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Siege)</label>
+<br />
+Siege Level: <label id="lblSiegeLevel">@game.GetMilitaryLevel(Constants.MilitaryType.Siege)</label>
+<br />
+Siege Damage: <label id="lblSiegeDamage">@game.GetMilitaryDamage(Constants.MilitaryType.Siege)</label>
+<br />
+Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Siege)" max="@Constants.ActionBarMax"></progress>
+<br />
+<hr />
+
+
+
 
 @code {
     Timer timer;

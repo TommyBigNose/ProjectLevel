@@ -27,9 +27,9 @@ namespace ProjectLevel.Contracts.v1.Models
 			_rangedUnitCount = 0;
 			_siegeUnitCount = 0;
 
-			_meleeLevel = 0;
-			_rangedLevel = 0;
-			_siegeLevel = 0;
+			_meleeLevel = 1;
+			_rangedLevel = 1;
+			_siegeLevel = 1;
 
 			MeleeActionBar = new ActionBar();
 			RangedActionBar = new ActionBar();

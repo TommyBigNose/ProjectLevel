@@ -58,8 +58,9 @@ namespace ProjectLevel.Contracts.v1.Models
 			Military.UpgradeUnitLevel(militaryType);
 		}
 
-		public void TriggerMilitaryActionBars()
+		public void TriggerAllActionBars()
 		{
+			Economy.GoldActionBar.IncrementActionBar(Economy.GoldLevel);
 			Military.MeleeActionBar.IncrementActionBar(Military.GetUnitCount(MilitaryType.Melee));
 			Military.RangedActionBar.IncrementActionBar(Military.GetUnitCount(MilitaryType.Ranged));
 			Military.SiegeActionBar.IncrementActionBar(Military.GetUnitCount(MilitaryType.Siege));

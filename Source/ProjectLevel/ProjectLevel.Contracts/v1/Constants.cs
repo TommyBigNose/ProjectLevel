@@ -8,7 +8,8 @@ namespace ProjectLevel.Contracts.v1
 {
 	public class Constants
 	{
-		public const float ActionBarMax = 1000.0f;
+		public const float ActionBarMax = 10.0f; // TODO: Small value for testing only, fix later
+		//public const float ActionBarMax = 1000.0f;
 
 		public enum MilitaryType
 		{
@@ -16,5 +17,6 @@ namespace ProjectLevel.Contracts.v1
 			Ranged,
 			Siege
 		}
+
 	}
 }

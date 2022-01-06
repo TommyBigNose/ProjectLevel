@@ -11,60 +11,90 @@ namespace ProjectLevel.Contracts.v1.Models
 {
 	public class Civilization //: ICivilization
 	{
-		//private int _gold;
-		//private int _goldLevel;
 		public Economy Economy { get; set; } = new Economy();
 		public Military Military { get; set; } = new Military();
-
-		//private int _meleeUnitCount;
-		//private int _rangedUnitCount;
-		//private int _siegeUnitCount;
-
-		//private int _meleeLevel;
-		//private int _rangedLevel;
-		//private int _siegeLevel;
-
-		//public ActionBar MeleeActionBar { get; set; }
-		//public ActionBar RangedActionBar { get; set; }
-		//public ActionBar SiegeActionBar { get; set; }
-
+		public List<Loot> Inventory { get; set; } = new List<Loot>();
 		public Civilization()
 		{
-			//MeleeActionBar = new ActionBar();
-			//RangedActionBar = new ActionBar();
-			//SiegeActionBar = new ActionBar();
-		}
+			// TODO: Kill this later, was just for testing
+			Inventory = new List<Loot>
+			{
+				new Loot()
+				{
+					Name = "Crap sword",
+					Level = 1,
+					GoldValue = 5,
 
-		#region Economy
-		//public int GetGold()
-		//{
-		//	return _gold;
-		//}
+					GoldIncome = 0,
+					GoldSpeedRatio = 0.0f,
+					MilitaryLootStats = new List<MilitaryLootStat>
+                    {
+						new MilitaryLootStat()
+                        {
+							MilitaryType = MilitaryType.Melee,
+							DamageRatio = 0.1f,
+							SpeedRatio = 0.1f,
+							RecruitRatio = 0.0f
+						}
+                    }
+                },
+				new Loot()
+				{
+					Name = "Crap sword + 1",
+					Level = 1,
+					GoldValue = 5,
 
-		//public int GetGoldIncomeRate()
-		//{
-		//	return _goldLevel;
-		//}
+					GoldIncome = 0,
+					GoldSpeedRatio = 0.0f,
+					MilitaryLootStats = new List<MilitaryLootStat>
+					{
+						new MilitaryLootStat()
+						{
+							MilitaryType = MilitaryType.Melee,
+							DamageRatio = 0.1f,
+							SpeedRatio = 0.1f,
+							RecruitRatio = 0.0f
+						}
+					}
+				},
+				new Loot()
+				{
+					Name = "Crap bow",
+					Level = 1,
+					GoldValue = 5,
 
-		//public void UpgradeGoldLevel()
-		//{
-		//	Economy.UpgradeGoldLevel();
-		//}
-		#endregion
-
-		#region Military
-		public void UpgradeUnitLevel(MilitaryType militaryType)
-		{
-			Military.UpgradeUnitLevel(militaryType);
+					GoldIncome = 0,
+					GoldSpeedRatio = 0.0f,
+					MilitaryLootStats = new List<MilitaryLootStat>
+					{
+						new MilitaryLootStat()
+						{
+							MilitaryType = MilitaryType.Ranged,
+							DamageRatio = 0.1f,
+							SpeedRatio = 0.1f,
+							RecruitRatio = 0.0f
+						}
+					}
+				}
+			};
 		}
 
 		public void TriggerAllActionBars()
 		{
-			Economy.GoldActionBar.IncrementActionBar(Economy.GoldLevel);
-			Military.MeleeActionBar.IncrementActionBar(Military.GetUnitCount(MilitaryType.Melee));
-			Military.RangedActionBar.IncrementActionBar(Military.GetUnitCount(MilitaryType.Ranged));
-			Military.SiegeActionBar.IncrementActionBar(Military.GetUnitCount(MilitaryType.Siege));
+			Economy.TriggerAllActionBars(Inventory);
+			Military.TriggerAllActionBars(Inventory);
 		}
+
+		#region Economy
+
+		#endregion
+
+		#region Military
+
+		#endregion
+
+		#region Inventory
+		
 		#endregion
 	}
 }

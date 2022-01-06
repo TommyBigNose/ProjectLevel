@@ -7,6 +7,7 @@
 @using ProjectLevel.Services.v1.Implementations
 @inject ProjectLevel.Contracts.v1.Interfaces.IGame game
 @inject ProjectLevel.Services.v1.Implementations.CommandManager commandManager
+@inject System.Timers.Timer globalTimer
 
 <PageTitle>Index</PageTitle>
 
@@ -93,25 +94,34 @@ Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Co
         return !func.Invoke();
     }
 
-    Timer timer;
-
     protected override void OnInitialized()
     {
-        timer = new Timer();
-        timer.Interval = 100;
-        timer.Elapsed += TimerOnElapsed;
-        timer.Start();
+        if(!globalTimer.Enabled)
+        {
+            globalTimer.Interval = 100;
+            globalTimer.Elapsed += RefreshUI;
+            globalTimer.Elapsed += RefreshGameTimers;
+            globalTimer.Start();
+        }
+        else
+        {
+            globalTimer.Elapsed += RefreshUI;
+        }
+
     }
 
-    private void TimerOnElapsed(object sender, ElapsedEventArgs e)
+    private void RefreshUI(object? sender, ElapsedEventArgs? e)
     {
         base.InvokeAsync(StateHasChanged);
+    }
 
+    private void RefreshGameTimers(object? sender, ElapsedEventArgs? e)
+    {
         game.TriggerAllActionBars();
     }
 
     public void Dispose()
     {
-        timer.Dispose();
+        //globalTimer.Dispose();
     }
 }

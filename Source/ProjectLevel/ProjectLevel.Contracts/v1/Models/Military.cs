@@ -3,135 +3,88 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 using static ProjectLevel.Contracts.v1.Constants;
 
 namespace ProjectLevel.Contracts.v1.Models
 {
 	public class Military
 	{
-		private int _meleeUnitCount;
-		private int _rangedUnitCount;
-		private int _siegeUnitCount;
-
-		private int _meleeLevel;
-		private int _rangedLevel;
-		private int _siegeLevel;
-
-		public ActionBar MeleeActionBar { get; set; }
-		public ActionBar RangedActionBar { get; set; }
-		public ActionBar SiegeActionBar { get; set; }
+		private List<MilitaryUnit> _militaryUnitList;
 
 		public Military()
 		{
-			_meleeUnitCount = 1;
-			_rangedUnitCount = 0;
-			_siegeUnitCount = 0;
-
-			_meleeLevel = 1;
-			_rangedLevel = 1;
-			_siegeLevel = 1;
-
-			MeleeActionBar = new ActionBar();
-			RangedActionBar = new ActionBar();
-			SiegeActionBar = new ActionBar();
+			_militaryUnitList = new List<MilitaryUnit>()
+            {
+				new MilitaryUnit()
+                {
+					MilitaryType = MilitaryType.Melee,
+					Count = 1,
+					Level = 1
+				},
+				new MilitaryUnit()
+				{
+					MilitaryType = MilitaryType.Ranged,
+					Count = 0,
+					Level = 1
+				},
+				new MilitaryUnit()
+				{
+					MilitaryType = MilitaryType.Siege,
+					Count = 0,
+					Level = 1
+				},
+			};
 		}
 
 		public int GetUnitCount(MilitaryType militaryType)
 		{
-			return militaryType switch
-			{
-				MilitaryType.Melee => _meleeUnitCount,
-				MilitaryType.Ranged => _rangedUnitCount,
-				MilitaryType.Siege => _siegeUnitCount,
-				_ => 0,
-			};
+			return _militaryUnitList.First(_ => _.MilitaryType == militaryType).Count;
 		}
 
 		public int GetUnitLevel(MilitaryType militaryType)
 		{
-			return militaryType switch
-			{
-				MilitaryType.Melee => _meleeLevel,
-				MilitaryType.Ranged => _rangedLevel,
-				MilitaryType.Siege => _siegeLevel,
-				_ => 0,
-			};
+			return _militaryUnitList.First(_ => _.MilitaryType == militaryType).Level;
 		}
 
 		public int GetUnitDamage(MilitaryType militaryType)
 		{
-			return militaryType switch
-			{
-				MilitaryType.Melee => _meleeUnitCount * _meleeLevel,
-				MilitaryType.Ranged => _rangedUnitCount * _rangedLevel,
-				MilitaryType.Siege => _siegeUnitCount * _siegeLevel,
-				_ => 0,
-			};
+			return GetUnitCount(militaryType) * GetUnitLevel(militaryType);
 		}
 
 		public ActionBar GetUnitActionBar(MilitaryType militaryType)
 		{
-			return militaryType switch
-			{
-				MilitaryType.Melee => MeleeActionBar,
-				MilitaryType.Ranged => RangedActionBar,
-				MilitaryType.Siege => SiegeActionBar,
-				_ => new ActionBar(),
-			};
+			return _militaryUnitList.First(_ => _.MilitaryType == militaryType).ActionBar;
 		}
+
+		public void TriggerAllActionBars(List<Loot> inventory)
+        {
+			foreach(MilitaryUnit unit in _militaryUnitList)
+            {
+                List<MilitaryLootStat?> loot = inventory.Select(_ => _.GetMilitaryLootStatsForType(unit.MilitaryType)).ToList();
+                float ratio = 1.0f + loot.FindAll(_ => _ != null).Sum(_ => _.SpeedRatio);
+                unit.ActionBar.IncrementActionBar(unit.Count * ratio);
+            }
+        }
 
 		public int RequiredGoldToLevelUp(MilitaryType militaryType)
 		{
-			return militaryType switch
-			{
-				MilitaryType.Melee => _meleeLevel * Constants.GoldPerLevelCost,
-				MilitaryType.Ranged => _rangedLevel * Constants.GoldPerLevelCost,
-				MilitaryType.Siege => _siegeLevel * Constants.GoldPerLevelCost,
-				_ => 0,
-			};
+			return GetUnitLevel(militaryType) * Constants.GoldPerLevelCost;
 		}
 
 		public void UpgradeUnitLevel(MilitaryType militaryType)
 		{
-			switch (militaryType)
-			{
-				case MilitaryType.Melee:
-					_meleeLevel++;
-					break;
-				case MilitaryType.Ranged:
-					_rangedLevel++;
-					break;
-				case MilitaryType.Siege:
-					_siegeLevel++;
-					break;
-			}
+			_militaryUnitList.First(_ => _.MilitaryType == militaryType).Level++;
 		}
 
 		public int RequiredGoldForNewUnit(MilitaryType militaryType)
 		{
-			return militaryType switch
-			{
-				MilitaryType.Melee => _meleeUnitCount * Constants.GoldPerLevelCost,
-				MilitaryType.Ranged => _rangedUnitCount * Constants.GoldPerLevelCost,
-				MilitaryType.Siege => _siegeUnitCount * Constants.GoldPerLevelCost,
-				_ => 0,
-			};
+			return GetUnitCount(militaryType) * Constants.GoldPerLevelCost;
 		}
 
 		public void UpgradeUnitCount(MilitaryType militaryType)
 		{
-			switch (militaryType)
-			{
-				case MilitaryType.Melee:
-					_meleeUnitCount++;
-					break;
-				case MilitaryType.Ranged:
-					_rangedUnitCount++;
-					break;
-				case MilitaryType.Siege:
-					_siegeUnitCount++;
-					break;
-			}
+			_militaryUnitList.First(_ => _.MilitaryType == militaryType).Count++;
 		}
 	}
 }

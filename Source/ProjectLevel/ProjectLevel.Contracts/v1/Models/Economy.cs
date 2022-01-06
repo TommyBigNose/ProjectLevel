@@ -26,6 +26,12 @@ namespace ProjectLevel.Contracts.v1.Models
 			GoldActionBar.ResetActionBar();
 		}
 
+		public void TriggerAllActionBars(List<Loot> inventory)
+        {
+			float ratio = 1.0f + inventory.Sum(_ => _.GoldSpeedRatio);
+			GoldActionBar.IncrementActionBar(GoldLevel * ratio);
+		}
+
 		public int RequiredGoldToLevelUp()
 		{
 			return GoldLevel * Constants.GoldPerLevelCost;
@@ -51,6 +57,5 @@ namespace ProjectLevel.Contracts.v1.Models
 			Gold -= RequiredGoldToLevelUp();
 			GoldLevel++;
 		}
-
 	}
 }

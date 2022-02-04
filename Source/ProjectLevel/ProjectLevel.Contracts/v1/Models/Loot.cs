@@ -18,12 +18,12 @@ namespace ProjectLevel.Contracts.v1.Models
 
         public bool ContainsMilitaryLootStatsForType(MilitaryType militaryType)
         {
-            return MilitaryLootStats.Exists(loot => loot.MilitaryType == militaryType);
+            return MilitaryLootStats.Exists(_ => _.MilitaryType == militaryType);
         }
 
-        public MilitaryLootStat? GetMilitaryLootStatsForType(MilitaryType militaryType)
+        public MilitaryLootStat GetMilitaryLootStatsForType(MilitaryType militaryType)
         {
-            return MilitaryLootStats.FirstOrDefault(loot => loot.MilitaryType == militaryType);
+            return MilitaryLootStats.First(_ => _.MilitaryType == militaryType);
         }
     }
 }

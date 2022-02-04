@@ -13,13 +13,13 @@ namespace ProjectLevel.Services.v1.Implementations
 	public class Game : IGame
 	{
 		private readonly IDataSource _dataSource;
-		private Civilization _civilization;
+		private readonly Civilization _civilization;
 
 		public Game(IDataSource dataSource)
 		{
 			_dataSource = dataSource;
 
-			_civilization = new Civilization();
+			_civilization = new Civilization(_dataSource);
 		}
 
 		public int GetGold()
@@ -80,7 +80,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public void UpgradeMilitaryLevel(MilitaryType militaryType)
 		{
-			_civilization.Economy.Gold -= _civilization.Military.RequiredGoldToLevelUp(militaryType);
+			_civilization.Economy.SpendGold(_civilization.Military.RequiredGoldToLevelUp(militaryType));
 			_civilization.Military.UpgradeUnitLevel(militaryType);
 		}
 
@@ -91,7 +91,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public void UpgradeMilitaryUnitCount(MilitaryType militaryType)
 		{
-			_civilization.Economy.Gold -= _civilization.Military.RequiredGoldForNewUnit(militaryType);
+			_civilization.Economy.SpendGold(_civilization.Military.RequiredGoldForNewUnit(militaryType));
 			_civilization.Military.UpgradeUnitCount(militaryType);
 		}
 

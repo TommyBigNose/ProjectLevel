@@ -10,7 +10,7 @@ namespace ProjectLevel.Contracts.v1.Models
 {
 	public class Military
 	{
-		private List<MilitaryUnit> _militaryUnitList;
+		private readonly List<MilitaryUnit> _militaryUnitList;
 
 		public Military()
 		{
@@ -57,13 +57,12 @@ namespace ProjectLevel.Contracts.v1.Models
 			return _militaryUnitList.First(_ => _.MilitaryType == militaryType).ActionBar;
 		}
 
-		public void TriggerAllActionBars(List<Loot> inventory)
+		public void TriggerAllActionBars(ItemChest itemChest)
         {
 			foreach(MilitaryUnit unit in _militaryUnitList)
             {
-                List<MilitaryLootStat?> loot = inventory.Select(_ => _.GetMilitaryLootStatsForType(unit.MilitaryType)).ToList();
-                float ratio = 1.0f + loot.FindAll(_ => _ != null).Sum(_ => _.SpeedRatio);
-                unit.ActionBar.IncrementActionBar(unit.Count * ratio);
+				float ratio = 1.0f + itemChest.GetStatsForMilitaryType(unit.MilitaryType).Sum(_ => _.SpeedRatio);
+				unit.ActionBar.IncrementActionBar(unit.Count * ratio);
             }
         }
 

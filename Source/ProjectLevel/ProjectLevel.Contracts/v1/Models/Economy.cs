@@ -23,12 +23,13 @@ namespace ProjectLevel.Contracts.v1.Models
 		public void RecieveGoldIncome()
 		{
 			Gold += GoldLevel;
+			//Gold += GoldLevel;
 			GoldActionBar.ResetActionBar();
 		}
 
-		public void TriggerAllActionBars(List<Loot> inventory)
+		public void TriggerAllActionBars(ItemChest itemChest)
         {
-			float ratio = 1.0f + inventory.Sum(_ => _.GoldSpeedRatio);
+			float ratio = 1.0f + itemChest.Inventory.Sum(_ => _.GoldSpeedRatio);
 			GoldActionBar.IncrementActionBar(GoldLevel * ratio);
 		}
 
@@ -42,6 +43,12 @@ namespace ProjectLevel.Contracts.v1.Models
 			return (Gold >= RequiredGoldToLevelUp());
 		}
 
+		public void UpgradeGoldLevel()
+		{
+			SpendGold(RequiredGoldToLevelUp());
+			GoldLevel++;
+		}
+
 		//public int GetGold()
 		//{
 		//	return _gold;
@@ -52,10 +59,11 @@ namespace ProjectLevel.Contracts.v1.Models
 		//	return _goldLevel;
 		//}
 
-		public void UpgradeGoldLevel()
+
+
+		public void SpendGold(int goldSpent)
 		{
-			Gold -= RequiredGoldToLevelUp();
-			GoldLevel++;
+			Gold -= goldSpent;
 		}
 	}
 }

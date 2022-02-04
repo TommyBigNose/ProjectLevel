@@ -9,7 +9,7 @@ namespace ProjectLevel.Services.v1.Implementations
 {
 	public class CommandManager
 	{
-		private Stack<ICommand> commands = new Stack<ICommand>();
+		private readonly Stack<ICommand> commands = new();
 
 		public void Invoke(ICommand command)
 		{
@@ -20,13 +20,13 @@ namespace ProjectLevel.Services.v1.Implementations
 			}
 		}
 
-		public void Undo()
-		{
-			if (commands.Count > 0)
-			{
-				ICommand command = commands.Pop();
-				//command.Undo();
-			}
-		}
+		//public void Undo()
+		//{
+		//	if (commands.Count > 0)
+		//	{
+		//		ICommand command = commands.Pop();
+		//		//command.Undo();
+		//	}
+		//}
 	}
 }

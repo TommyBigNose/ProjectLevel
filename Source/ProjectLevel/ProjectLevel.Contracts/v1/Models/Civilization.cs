@@ -13,76 +13,16 @@ namespace ProjectLevel.Contracts.v1.Models
 	{
 		public Economy Economy { get; set; } = new Economy();
 		public Military Military { get; set; } = new Military();
-		public List<Loot> Inventory { get; set; } = new List<Loot>();
-		public Civilization()
+		public ItemChest ItemChest { get; set; }
+		public Civilization(IDataSource dataSource)
 		{
-			// TODO: Kill this later, was just for testing
-			Inventory = new List<Loot>
-			{
-				new Loot()
-				{
-					Name = "Crap sword",
-					Level = 1,
-					GoldValue = 5,
-
-					GoldIncome = 0,
-					GoldSpeedRatio = 0.0f,
-					MilitaryLootStats = new List<MilitaryLootStat>
-                    {
-						new MilitaryLootStat()
-                        {
-							MilitaryType = MilitaryType.Melee,
-							DamageRatio = 0.1f,
-							SpeedRatio = 0.1f,
-							RecruitRatio = 0.0f
-						}
-                    }
-                },
-				new Loot()
-				{
-					Name = "Crap sword + 1",
-					Level = 1,
-					GoldValue = 5,
-
-					GoldIncome = 0,
-					GoldSpeedRatio = 0.0f,
-					MilitaryLootStats = new List<MilitaryLootStat>
-					{
-						new MilitaryLootStat()
-						{
-							MilitaryType = MilitaryType.Melee,
-							DamageRatio = 0.1f,
-							SpeedRatio = 0.1f,
-							RecruitRatio = 0.0f
-						}
-					}
-				},
-				new Loot()
-				{
-					Name = "Crap bow",
-					Level = 1,
-					GoldValue = 5,
-
-					GoldIncome = 0,
-					GoldSpeedRatio = 0.0f,
-					MilitaryLootStats = new List<MilitaryLootStat>
-					{
-						new MilitaryLootStat()
-						{
-							MilitaryType = MilitaryType.Ranged,
-							DamageRatio = 0.1f,
-							SpeedRatio = 0.1f,
-							RecruitRatio = 0.0f
-						}
-					}
-				}
-			};
+			ItemChest = new ItemChest(dataSource.GetAvailableLoot());
 		}
 
 		public void TriggerAllActionBars()
 		{
-			Economy.TriggerAllActionBars(Inventory);
-			Military.TriggerAllActionBars(Inventory);
+			Economy.TriggerAllActionBars(ItemChest);
+			Military.TriggerAllActionBars(ItemChest);
 		}
 
 		#region Economy

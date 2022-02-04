@@ -8,8 +8,7 @@ namespace ProjectLevel.Contracts.v1
 {
 	public class Constants
 	{
-		// TODO: ActionBarMax =  Small value for testing only, fix later to 1000.0f
-		public const float ActionBarMax = 10.0f; 
+		public const float ActionBarMax = 1000.0f; 
 		public const int GoldPerLevelCost = 10;
 
 		public enum MilitaryType

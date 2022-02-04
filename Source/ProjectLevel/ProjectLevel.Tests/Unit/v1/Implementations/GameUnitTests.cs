@@ -23,6 +23,8 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// TestDataSource has some special items to speed up loot timer
 			IDataSource dataSource = new TestDataSource();
 			_sut = new Game(dataSource);
+
+			_sut.AddLoot(dataSource.GetAvailableLoot());
 		}
 
 		[TearDown]
@@ -30,6 +32,72 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			
 		}
+
+		#region Data
+		[TestCase(0, 4)]
+		[TestCase(1, 4)]
+		[TestCase(2, 4)]
+		public void GetAvailableLoot(int addLootCount, int expected)
+		{
+			// Arrange
+			IDataSource dataSource = new TestDataSource();
+			_sut = new Game(dataSource);
+
+			// Act
+			for (int _ = 0; _ < addLootCount; _++)
+			{
+				_sut.AddLoot(_sut.GetAvailableLoot());
+			}
+			var result = _sut.GetAvailableLoot().Count;
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+		#endregion
+
+		#region Civilization
+		[TestCase(0, 0)]
+		[TestCase(1, 4)]
+		[TestCase(2, 8)]
+		public void AddLoot(int addLootCount, int expected)
+		{
+			// Arrange
+			IDataSource dataSource = new TestDataSource();
+			_sut = new Game(dataSource);
+
+			// Act
+			for (int _ = 0; _ < addLootCount; _++)
+			{
+				_sut.AddLoot(_sut.GetAvailableLoot());
+			}
+			var result = _sut.GetLoot().Count;
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 0)]
+		[TestCase(1, 4)]
+		[TestCase(2, 8)]
+		public void GetLoot(int addLootCount, int expected)
+		{
+			// Arrange
+			IDataSource dataSource = new TestDataSource();
+			_sut = new Game(dataSource);
+
+			for (int _ = 0; _ < addLootCount; _++)
+			{
+				_sut.AddLoot(dataSource.GetAvailableLoot());
+			}
+
+			// Act
+
+			var result = _sut.GetLoot().Count;
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+		#endregion
 
 		#region Gold
 		[TestCase(0, 0)]

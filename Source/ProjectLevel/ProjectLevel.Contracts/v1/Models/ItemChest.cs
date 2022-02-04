@@ -11,9 +11,14 @@ namespace ProjectLevel.Contracts.v1.Models
 	{
 		public List<Loot> Inventory { get; set; }
 
-		public ItemChest(List<Loot> allAvailableLoot)
+		public ItemChest()
 		{
-			Inventory = allAvailableLoot;
+			Inventory = new List<Loot>();
+		}
+
+		public ItemChest(List<Loot> currentLoot)
+		{
+			Inventory = currentLoot;
 		}
 
 		public bool ContainsItemsForMilitaryType(MilitaryType militaryType)

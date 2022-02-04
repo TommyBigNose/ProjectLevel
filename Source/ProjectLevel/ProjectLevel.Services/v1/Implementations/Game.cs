@@ -19,9 +19,29 @@ namespace ProjectLevel.Services.v1.Implementations
 		{
 			_dataSource = dataSource;
 
-			_civilization = new Civilization(_dataSource);
+			_civilization = new Civilization();
 		}
 
+		#region Data
+		public List<Loot> GetAvailableLoot()
+		{
+			return _dataSource.GetAvailableLoot();
+		}
+
+		public List<Loot> GetLoot()
+		{
+			return _civilization.ItemChest.Inventory;
+		}
+		#endregion
+
+		#region Civilization
+		public void AddLoot(List<Loot> loot)
+		{
+			_civilization.ItemChest.Inventory.AddRange(loot);
+		}
+		#endregion
+
+		#region Gold
 		public int GetGold()
 		{
 			return _civilization.Economy.Gold;
@@ -51,8 +71,9 @@ namespace ProjectLevel.Services.v1.Implementations
 		{
 			return _civilization.Economy.GoldActionBar.Value;
 		}
+		#endregion
 
-
+		#region Military
 		public int GetMilitaryUnitCount(MilitaryType militaryType)
 		{
 			return _civilization.Military.GetUnitCount(militaryType);
@@ -94,6 +115,7 @@ namespace ProjectLevel.Services.v1.Implementations
 			_civilization.Economy.SpendGold(_civilization.Military.RequiredGoldForNewUnit(militaryType));
 			_civilization.Military.UpgradeUnitCount(militaryType);
 		}
+		#endregion
 
 		public void TriggerAllActionBars()
 		{

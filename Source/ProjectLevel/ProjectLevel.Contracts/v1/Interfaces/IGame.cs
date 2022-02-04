@@ -10,7 +10,6 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 {
 	public interface IGame
 	{
-		//Civilization GetCivilization();
 		int GetGold();
 		int GetGoldIncomeRate();
 		int RequiredGoldToLevelUp();

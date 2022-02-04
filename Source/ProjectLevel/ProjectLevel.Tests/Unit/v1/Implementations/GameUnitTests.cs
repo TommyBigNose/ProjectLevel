@@ -31,27 +31,122 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			
 		}
 
+		#region Gold
 		[TestCase(0, 0)]
 		[TestCase(10, 1)]
 		[TestCase(20, 2)]
-		public void GetGold(int gameTicks, int expectedGold)
+		public void GetGold(int gameTicks, int expected)
 		{
 			// Arrange
-			// Act
 			TriggerGameActionBars(gameTicks);
+
+			// Act
 			var result = _sut.GetGold();
 
 			// Assert
-			Assert.IsTrue(result == expectedGold);
+			Assert.AreEqual(expected, result);
 		}
 
-		[Test]
-		public void PlaceHolderTest()
+		[TestCase(0, 1, false)]
+		[TestCase(10, 1, false)]
+		[TestCase(20, 1, false)]
+		[TestCase(100, 2, true)]
+		public void GetGoldIncomeRate(int gameTicks, int expected, bool upgrade)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if(upgrade) _sut.UpgradeGoldLevel();
+
+			// Act
+			var result = _sut.GetGoldIncomeRate();
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 10, false)]
+		[TestCase(10, 10, false)]
+		[TestCase(20, 10, false)]
+		[TestCase(100, 20, true)]
+		public void RequiredGoldToLevelUp(int gameTicks, int expected, bool upgrade)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeGoldLevel();
+
+			// Act
+			var result = _sut.RequiredGoldToLevelUp();
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, false, false)]
+		[TestCase(10, false, false)]
+		[TestCase(20, false, false)]
+		[TestCase(100, true, false)]
+		[TestCase(100, false, true)]
+		public void CanUpgradeGoldLevel(int gameTicks, bool expected, bool upgrade)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeGoldLevel();
+
+			// Act
+			var result = _sut.CanUpgradeGoldLevel();
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 1)]
+		[TestCase(1, 2)]
+		[TestCase(2, 3)]
+		[TestCase(100, 101)]
+		public void UpgradeGoldLevel(int upgradeCount, int expected)
+		{
+			// Arrange
+			// Act
+			for (int _ = 0; _ < upgradeCount; _++)
+			{
+				_sut.UpgradeGoldLevel();
+			}
+			var result = _sut.GetGoldIncomeRate();
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 0.0f, false)]
+		[TestCase(5, 505.0f, false)]
+		[TestCase(10, 0.0f, false)]
+		[TestCase(11, 101.0f, false)]
+		[TestCase(20, 0.0f, false)]
+		[TestCase(100, 0.0f, false)]
+		public void GetGoldActionBarValue(int gameTicks, float expected, bool upgrade)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeGoldLevel();
+
+			// Act
+			var result = _sut.GetGoldActionBarValue();
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+		#endregion
+
+		#region Military
+
+		#endregion
+
+		[TestCase(0, 0)]
+		public void PlaceHolderTest(int gameTicks, int expected)
 		{
 			// Arrange
 			// Act
 			// Assert
-			Assert.IsTrue(true);
 		}
 
 		private void TriggerGameActionBars(int amount)

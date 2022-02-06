@@ -206,6 +206,37 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#endregion
 
 		#region Military
+		[TestCase(0, 1, MilitaryType.Melee)]
+		[TestCase(10, 1, MilitaryType.Melee)]
+		[TestCase(20, 1, MilitaryType.Melee)]
+		[TestCase(100, 1, MilitaryType.Melee)]
+		public void GetMilitaryUnitCount(int gameTicks, int expected, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+
+			// Act
+			var result = _sut.GetMilitaryUnitCount(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 1, MilitaryType.Melee)]
+		[TestCase(10, 1, MilitaryType.Melee)]
+		[TestCase(20, 1, MilitaryType.Melee)]
+		[TestCase(100, 1, MilitaryType.Melee)]
+		public void GetMilitaryLevel(int gameTicks, int expected, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+
+			// Act
+			var result = _sut.GetMilitaryLevel(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
 
 		#endregion
 

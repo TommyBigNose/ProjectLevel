@@ -210,6 +210,14 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, 1, MilitaryType.Melee)]
 		[TestCase(20, 1, MilitaryType.Melee)]
 		[TestCase(100, 1, MilitaryType.Melee)]
+		[TestCase(0, 1, MilitaryType.Ranged)]
+		[TestCase(10, 1, MilitaryType.Ranged)]
+		[TestCase(20, 1, MilitaryType.Ranged)]
+		[TestCase(100, 1, MilitaryType.Ranged)]
+		[TestCase(0, 1, MilitaryType.Siege)]
+		[TestCase(10, 1, MilitaryType.Siege)]
+		[TestCase(20, 1, MilitaryType.Siege)]
+		[TestCase(100, 1, MilitaryType.Siege)]
 		public void GetMilitaryUnitCount(int gameTicks, int expected, MilitaryType militaryType)
 		{
 			// Arrange
@@ -226,6 +234,14 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, 1, MilitaryType.Melee)]
 		[TestCase(20, 1, MilitaryType.Melee)]
 		[TestCase(100, 1, MilitaryType.Melee)]
+		[TestCase(0, 1, MilitaryType.Ranged)]
+		[TestCase(10, 1, MilitaryType.Ranged)]
+		[TestCase(20, 1, MilitaryType.Ranged)]
+		[TestCase(100, 1, MilitaryType.Ranged)]
+		[TestCase(0, 1, MilitaryType.Siege)]
+		[TestCase(10, 1, MilitaryType.Siege)]
+		[TestCase(20, 1, MilitaryType.Siege)]
+		[TestCase(100, 1, MilitaryType.Siege)]
 		public void GetMilitaryLevel(int gameTicks, int expected, MilitaryType militaryType)
 		{
 			// Arrange
@@ -242,6 +258,14 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, false, MilitaryType.Melee)]
 		[TestCase(20, false, MilitaryType.Melee)]
 		[TestCase(100, true, MilitaryType.Melee)]
+		[TestCase(0, false, MilitaryType.Ranged)]
+		[TestCase(10, false, MilitaryType.Ranged)]
+		[TestCase(20, false, MilitaryType.Ranged)]
+		[TestCase(100, true, MilitaryType.Ranged)]
+		[TestCase(0, false, MilitaryType.Siege)]
+		[TestCase(10, false, MilitaryType.Siege)]
+		[TestCase(20, false, MilitaryType.Siege)]
+		[TestCase(100, true, MilitaryType.Siege)]
 		public void CanUpgradeMilitaryLevel(int gameTicks, bool expected, MilitaryType militaryType)
 		{
 			// Arrange
@@ -259,6 +283,16 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(20, false, false, MilitaryType.Melee)]
 		[TestCase(100, true, false, MilitaryType.Melee)]
 		[TestCase(100, false, true, MilitaryType.Melee)]
+		[TestCase(0, false, false, MilitaryType.Ranged)]
+		[TestCase(10, false, false, MilitaryType.Ranged)]
+		[TestCase(20, false, false, MilitaryType.Ranged)]
+		[TestCase(100, true, false, MilitaryType.Ranged)]
+		[TestCase(100, false, true, MilitaryType.Ranged)]
+		[TestCase(0, false, false, MilitaryType.Siege)]
+		[TestCase(10, false, false, MilitaryType.Siege)]
+		[TestCase(20, false, false, MilitaryType.Siege)]
+		[TestCase(100, true, false, MilitaryType.Siege)]
+		[TestCase(100, false, true, MilitaryType.Siege)]
 		public void UpgradeMilitaryLevel(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
@@ -276,6 +310,14 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, false, MilitaryType.Melee)]
 		[TestCase(20, false, MilitaryType.Melee)]
 		[TestCase(100, true, MilitaryType.Melee)]
+		[TestCase(0, false, MilitaryType.Ranged)]
+		[TestCase(10, false, MilitaryType.Ranged)]
+		[TestCase(20, false, MilitaryType.Ranged)]
+		[TestCase(100, true, MilitaryType.Ranged)]
+		[TestCase(0, false, MilitaryType.Siege)]
+		[TestCase(10, false, MilitaryType.Siege)]
+		[TestCase(20, false, MilitaryType.Siege)]
+		[TestCase(100, true, MilitaryType.Siege)]
 		public void CanUpgradeMilitaryUnitCount(int gameTicks, bool expected, MilitaryType militaryType)
 		{
 			// Arrange
@@ -293,6 +335,16 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(20, false, false, MilitaryType.Melee)]
 		[TestCase(100, true, false, MilitaryType.Melee)]
 		[TestCase(100, false, true, MilitaryType.Melee)]
+		[TestCase(0, false, false, MilitaryType.Ranged)]
+		[TestCase(10, false, false, MilitaryType.Ranged)]
+		[TestCase(20, false, false, MilitaryType.Ranged)]
+		[TestCase(100, true, false, MilitaryType.Ranged)]
+		[TestCase(100, false, true, MilitaryType.Ranged)]
+		[TestCase(0, false, false, MilitaryType.Siege)]
+		[TestCase(10, false, false, MilitaryType.Siege)]
+		[TestCase(20, false, false, MilitaryType.Siege)]
+		[TestCase(100, true, false, MilitaryType.Siege)]
+		[TestCase(100, false, true, MilitaryType.Siege)]
 		public void UpgradeMilitaryUnitCount(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
@@ -312,6 +364,18 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(11, 101.0f, false, MilitaryType.Melee)]
 		[TestCase(20, 0.0f, false, MilitaryType.Melee)]
 		[TestCase(100, 0.0f, false, MilitaryType.Melee)]
+		[TestCase(0, 0.0f, false, MilitaryType.Ranged)]
+		[TestCase(5, 505.0f, false, MilitaryType.Ranged)]
+		[TestCase(10, 0.0f, false, MilitaryType.Ranged)]
+		[TestCase(11, 101.0f, false, MilitaryType.Ranged)]
+		[TestCase(20, 0.0f, false, MilitaryType.Ranged)]
+		[TestCase(100, 0.0f, false, MilitaryType.Ranged)]
+		[TestCase(0, 0.0f, false, MilitaryType.Siege)]
+		[TestCase(5, 505.0f, false, MilitaryType.Siege)]
+		[TestCase(10, 0.0f, false, MilitaryType.Siege)]
+		[TestCase(11, 101.0f, false, MilitaryType.Siege)]
+		[TestCase(20, 0.0f, false, MilitaryType.Siege)]
+		[TestCase(100, 0.0f, false, MilitaryType.Siege)]
 		public void GetMilitaryActionBarValue(int gameTicks, float expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange

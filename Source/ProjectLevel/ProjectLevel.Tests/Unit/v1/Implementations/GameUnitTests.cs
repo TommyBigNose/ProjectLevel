@@ -238,6 +238,93 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
+		[TestCase(0, false, MilitaryType.Melee)]
+		[TestCase(10, false, MilitaryType.Melee)]
+		[TestCase(20, false, MilitaryType.Melee)]
+		[TestCase(100, true, MilitaryType.Melee)]
+		public void CanUpgradeMilitaryLevel(int gameTicks, bool expected, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+
+			// Act
+			var result = _sut.CanUpgradeMilitaryLevel(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, false, false, MilitaryType.Melee)]
+		[TestCase(10, false, false, MilitaryType.Melee)]
+		[TestCase(20, false, false, MilitaryType.Melee)]
+		[TestCase(100, true, false, MilitaryType.Melee)]
+		[TestCase(100, false, true, MilitaryType.Melee)]
+		public void UpgradeMilitaryLevel(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeMilitaryLevel(militaryType);
+
+			// Act
+			var result = _sut.CanUpgradeMilitaryLevel(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, false, MilitaryType.Melee)]
+		[TestCase(10, false, MilitaryType.Melee)]
+		[TestCase(20, false, MilitaryType.Melee)]
+		[TestCase(100, true, MilitaryType.Melee)]
+		public void CanUpgradeMilitaryUnitCount(int gameTicks, bool expected, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+
+			// Act
+			var result = _sut.CanUpgradeMilitaryUnitCount(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, false, false, MilitaryType.Melee)]
+		[TestCase(10, false, false, MilitaryType.Melee)]
+		[TestCase(20, false, false, MilitaryType.Melee)]
+		[TestCase(100, true, false, MilitaryType.Melee)]
+		[TestCase(100, false, true, MilitaryType.Melee)]
+		public void UpgradeMilitaryUnitCount(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeMilitaryUnitCount(militaryType);
+
+			// Act
+			var result = _sut.CanUpgradeMilitaryUnitCount(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 0.0f, false, MilitaryType.Melee)]
+		[TestCase(5, 505.0f, false, MilitaryType.Melee)]
+		[TestCase(10, 0.0f, false, MilitaryType.Melee)]
+		[TestCase(11, 101.0f, false, MilitaryType.Melee)]
+		[TestCase(20, 0.0f, false, MilitaryType.Melee)]
+		[TestCase(100, 0.0f, false, MilitaryType.Melee)]
+		public void GetMilitaryActionBarValue(int gameTicks, float expected, bool upgrade, MilitaryType militaryType)
+		{
+			// Arrange
+			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeMilitaryLevel(militaryType);
+
+			// Act
+			var result = _sut.GetMilitaryActionBarValue(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
 		#endregion
 
 		[TestCase(0, 0)]

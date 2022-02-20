@@ -20,10 +20,9 @@ namespace ProjectLevel.Contracts.v1.Models
 			GoldActionBar = new ActionBar();
 		}
 
-		public void RecieveGoldIncome()
+		public void RecieveGoldIncome(ItemChest itemChest)
 		{
-			Gold += GoldLevel;
-			//Gold += GoldLevel;
+			Gold += GoldLevel + itemChest.Inventory.Sum(_ => _.GoldIncome);
 			GoldActionBar.ResetActionBar();
 		}
 

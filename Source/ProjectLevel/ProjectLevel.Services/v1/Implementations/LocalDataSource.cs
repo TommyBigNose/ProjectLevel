@@ -17,6 +17,16 @@ namespace ProjectLevel.Services.v1.Implementations
 			{
 				new Loot()
 				{
+					Name = "Gold Relic",
+					Level = 1,
+					GoldValue = 5,
+
+					GoldIncome = 10,
+					GoldSpeedRatio = 100.0f,
+					MilitaryLootStats = new List<MilitaryLootStat>()
+				},
+				new Loot()
+				{
 					Name = "Crap sword",
 					Level = 1,
 					GoldValue = 5,

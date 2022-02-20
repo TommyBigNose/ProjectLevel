@@ -391,14 +391,6 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 
 		#endregion
 
-		[TestCase(0, 0)]
-		public void PlaceHolderTest(int gameTicks, int expected)
-		{
-			// Arrange
-			// Act
-			// Assert
-		}
-
 		private void TriggerGameActionBars(int amount)
 		{
 			for (int _ = 0; _ < amount; _++)

@@ -13,7 +13,54 @@
 
 <h1>Hello, from Project Level!</h1>
 
-Your current Civilization info:
+<h3>Debug Crap</h3>
+<button class="btn btn-primary" @onclick=@GetAllItems>Get all Items</button>
+
+<h3>Military</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width:10%" scope="col">Type</th>
+      <th style="width:10%" scope="col">Unit Count</th>
+      <th style="width:20%" scope="col">Buy Unit</th>
+      <th style="width:10%" scope="col">Level</th>
+      <th style="width:20%" scope="col">Ugrade</th>
+      <th style="width:10%" scope="col">Damage</th>
+      <th style="width:20%" scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">@nameof(Constants.MilitaryType.Melee)</th>
+      <td>@game.GetMilitaryUnitCount(Constants.MilitaryType.Melee)</td>
+      <td><button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => UpgradeMilitaryUnitCount(Constants.MilitaryType.Melee))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryUnitCount(Constants.MilitaryType.Melee))">+</button></td>
+      <td>@game.GetMilitaryLevel(Constants.MilitaryType.Melee)</td>
+      <td><button class="btn btn-primary" style="background-color:blue; color:white;" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Melee))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Melee))">+</button></td>
+      <td>@game.GetMilitaryDamage(Constants.MilitaryType.Melee)</td>
+      <td><progress id="progMelee" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Melee)" max="@Constants.ActionBarMax"></progress></td>
+    </tr>
+    <tr>
+      <th scope="row">@nameof(Constants.MilitaryType.Ranged)</th>
+      <td>@game.GetMilitaryUnitCount(Constants.MilitaryType.Ranged)</td>
+      <td><button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => UpgradeMilitaryUnitCount(Constants.MilitaryType.Ranged))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryUnitCount(Constants.MilitaryType.Ranged))">+</button></td>
+      <td>@game.GetMilitaryLevel(Constants.MilitaryType.Ranged)</td>
+      <td><button class="btn btn-primary" style="background-color:blue; color:white;" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Ranged))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Ranged))">+</button></td>
+      <td>@game.GetMilitaryDamage(Constants.MilitaryType.Ranged)</td>
+      <td><progress id="progRanged" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Ranged)" max="@Constants.ActionBarMax"></progress></td>
+    </tr>
+    <tr>
+      <th scope="row">@nameof(Constants.MilitaryType.Siege)</th>
+      <td>@game.GetMilitaryUnitCount(Constants.MilitaryType.Siege)</td>
+      <td><button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => UpgradeMilitaryUnitCount(Constants.MilitaryType.Siege))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryUnitCount(Constants.MilitaryType.Siege))">+</button></td>
+      <td>@game.GetMilitaryLevel(Constants.MilitaryType.Siege)</td>
+      <td><button class="btn btn-primary" style="background-color:blue; color:white;" @onclick="@(_ => UpgradeMilitaryLevel(Constants.MilitaryType.Siege))" disabled="@ShouldButtonBeClickable(() => game.CanUpgradeMilitaryLevel(Constants.MilitaryType.Siege))">+</button></td>
+      <td>@game.GetMilitaryDamage(Constants.MilitaryType.Siege)</td>
+      <td><progress id="progSiege" value="@game.GetMilitaryActionBarValue(Constants.MilitaryType.Siege)" max="@Constants.ActionBarMax"></progress></td>
+    </tr>
+  </tbody>
+</table>
+
+Your current Civilization info: 
 <br />
 <hr />
 
@@ -118,6 +165,12 @@ Siege Action: <progress id="progSiege" value="@game.GetMilitaryActionBarValue(Co
     private void RefreshGameTimers(object? sender, ElapsedEventArgs? e)
     {
         game.TriggerAllActionBars();
+    }
+
+    // Debug crap
+    private void GetAllItems()
+    {
+        game.AddLoot(game.GetAvailableLoot());
     }
 
     public void Dispose()

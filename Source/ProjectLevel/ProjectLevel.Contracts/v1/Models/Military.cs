@@ -25,13 +25,13 @@ namespace ProjectLevel.Contracts.v1.Models
 				new MilitaryUnit()
 				{
 					MilitaryType = MilitaryType.Ranged,
-					Count = 0,
+					Count = 1,
 					Level = 1
 				},
 				new MilitaryUnit()
 				{
 					MilitaryType = MilitaryType.Siege,
-					Count = 0,
+					Count = 1,
 					Level = 1
 				},
 			};

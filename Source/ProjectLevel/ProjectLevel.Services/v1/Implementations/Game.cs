@@ -122,7 +122,7 @@ namespace ProjectLevel.Services.v1.Implementations
 			_civilization.TriggerAllActionBars();
 			if(_civilization.Economy.GoldActionBar.IsReady())
 			{
-				_civilization.Economy.RecieveGoldIncome();
+				_civilization.Economy.RecieveGoldIncome(_civilization.ItemChest);
 			}
 
 			foreach(MilitaryType militaryType in Enum.GetValues(typeof(MilitaryType)))

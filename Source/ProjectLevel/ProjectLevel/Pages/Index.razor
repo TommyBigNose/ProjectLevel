@@ -60,6 +60,43 @@
   </tbody>
 </table>
 
+<h3>Invetory</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width:10%" scope="col">Image</th>
+      <th style="width:10%" scope="col">Name</th>
+      <th style="width:10%" scope="col">Level</th>
+      <th style="width:20%" scope="col">Gold Value</th>
+      <th style="width:20%" scope="col">Gold Income</th>
+      <th style="width:10%" scope="col">Gold Speed Ratio</th>
+      <th style="width:20%" scope="col">Military Stats....</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+      @foreach(var loot in @game.GetLoot())
+      {
+        <tr>
+            <td>@loot.Name</td>
+            <td>@loot.Name</td>
+            <td>@loot.Level</td>
+            <td>@loot.GoldValue</td>
+            <td>@loot.GoldIncome</td>
+            <td>@loot.GoldSpeedRatio</td>
+            <td>"TBD"</td>
+        </tr>
+      }
+  </tbody>
+  @*<tbody>
+    <tr>
+      <td>@game.GetAvailableLoot()</td>
+      
+    </tr>
+  </tbody>*@
+</table>
+
+
 Your current Civilization info: 
 <br />
 <hr />

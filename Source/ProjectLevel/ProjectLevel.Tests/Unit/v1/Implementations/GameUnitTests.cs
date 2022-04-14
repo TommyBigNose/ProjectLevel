@@ -391,6 +391,19 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 
 		#endregion
 
+		#region Enemy
+		//[TestCase(1)]
+		//public void GetNewEnemy(int enemyLevel)
+		//{
+		//	// Arrange
+		//	// Act
+		//	var enemy = _sut.GetEnemy(enemy);
+
+		//	// Assert
+		//	Assert.AreEqual(enemyLevel, enemy.Level);
+		//}
+		#endregion
+
 		private void TriggerGameActionBars(int amount)
 		{
 			for (int _ = 0; _ < amount; _++)

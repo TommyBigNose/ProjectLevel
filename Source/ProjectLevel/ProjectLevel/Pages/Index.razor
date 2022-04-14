@@ -84,7 +84,30 @@
             <td>@loot.GoldValue</td>
             <td>@loot.GoldIncome</td>
             <td>@loot.GoldSpeedRatio</td>
-            <td>"TBD"</td>
+            <td>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                         <th style="width:25%" scope="col">MilitaryType</th>
+                         <th style="width:25%" scope="col">DamageRatio</th>
+                         <th style="width:25%" scope="col">RecruitRatio</th>
+                         <th style="width:25%" scope="col">SpeedRatio</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    @foreach(var militaryStat in @loot.MilitaryLootStats)
+                    {
+                         <tr>
+                             <td>@militaryStat.MilitaryType</td>
+                             <td>@militaryStat.DamageRatio</td>
+                             <td>@militaryStat.RecruitRatio</td>
+                             <td>@militaryStat.SpeedRatio</td>
+                         </tr>
+                    }
+                </tbody>
+            </table>
+            </td>
         </tr>
       }
   </tbody>

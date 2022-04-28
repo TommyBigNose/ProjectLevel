@@ -18,6 +18,7 @@ namespace ProjectLevel.Services.v1.Implementations
 				new Loot()
 				{
 					Name = "Gold Relic",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 
@@ -28,6 +29,7 @@ namespace ProjectLevel.Services.v1.Implementations
 				new Loot()
 				{
 					Name = "Crap sword",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 
@@ -47,6 +49,7 @@ namespace ProjectLevel.Services.v1.Implementations
 				new Loot()
 				{
 					Name = "Crap sword + 1",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 
@@ -66,6 +69,7 @@ namespace ProjectLevel.Services.v1.Implementations
 				new Loot()
 				{
 					Name = "Crap bow",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 

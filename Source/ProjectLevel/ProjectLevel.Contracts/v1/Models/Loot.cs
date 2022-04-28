@@ -10,6 +10,7 @@ namespace ProjectLevel.Contracts.v1.Models
     public class Loot
     {
         public string? Name { get; set; } = string.Empty;
+        public string? ImageResourceString { get; set; } = string.Empty;
         public int Level { get; set; } = 0;
         public int GoldValue { get; set; } = 0;
         public int GoldIncome { get; set; } = 0;

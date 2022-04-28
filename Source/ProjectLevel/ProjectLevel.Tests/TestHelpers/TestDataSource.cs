@@ -18,6 +18,7 @@ namespace ProjectLevel.Tests.TestHelpers
 				new Loot()
 				{
 					Name = "Speed Up Gold Income",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 
@@ -28,6 +29,7 @@ namespace ProjectLevel.Tests.TestHelpers
 				new Loot()
 				{
 					Name = "Melee - Speed up",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 
@@ -47,6 +49,7 @@ namespace ProjectLevel.Tests.TestHelpers
 				new Loot()
 				{
 					Name = "Ranged - Speed up",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 
@@ -66,6 +69,7 @@ namespace ProjectLevel.Tests.TestHelpers
 				new Loot()
 				{
 					Name = "Siege - Speed up",
+					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
 

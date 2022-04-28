@@ -60,7 +60,7 @@
   </tbody>
 </table>
 
-<h3>Invetory</h3>
+<h3>Inventory</h3>
 <table class="table table-striped">
   <thead>
     <tr>
@@ -78,7 +78,7 @@
       @foreach(var loot in @game.GetLoot())
       {
         <tr>
-            <td>@loot.Name</td>
+            <td><img src="images/@loot.ImageResourceString"/></td>
             <td>@loot.Name</td>
             <td>@loot.Level</td>
             <td>@loot.GoldValue</td>

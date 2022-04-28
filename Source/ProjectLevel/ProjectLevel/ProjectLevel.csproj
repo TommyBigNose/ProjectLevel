@@ -16,4 +16,9 @@
     <ProjectReference Include="..\ProjectLevel.Services\ProjectLevel.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\images\Default.pdn" />
+    <None Include="wwwroot\images\Default.png" />
+  </ItemGroup>
+
 </Project>

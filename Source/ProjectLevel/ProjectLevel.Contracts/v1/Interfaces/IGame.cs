@@ -28,6 +28,12 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		float GetGoldActionBarValue();
 		#endregion
 
+		#region Shop
+		List<Loot> GetShopLoot();
+		bool CanPurchaseLoot(Loot loot);
+		void PurchaseLoot(Loot loot);
+		#endregion
+
 		#region Military
 		int GetMilitaryUnitCount(MilitaryType militaryType);
 		int GetMilitaryLevel(MilitaryType militaryType);

@@ -205,6 +205,74 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		}
 		#endregion
 
+		#region Shop
+		[TestCase(1, 3)]
+		[TestCase(2, 6)]
+		public void GetShopLoot(int getLootCount, int expected)
+		{
+			// Arrange
+			List<Loot> loot = new List<Loot>();
+
+			// Act
+			for (int i = 0; i < getLootCount; i++)
+			{
+				loot.AddRange(_sut.GetShopLoot());
+			}
+			
+			int result = loot.Count;
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, false, false)]
+		[TestCase(5, false, false)]
+		[TestCase(10, false, false)]
+		[TestCase(50, true, false)]
+		[TestCase(55, false, true)]
+		[TestCase(100, true, true)]
+		public void CanPurchaseLoot(int gameTicks, bool expected, bool purchaseLoot)
+		{
+			// Arrange
+			List<Loot> loot = _sut.GetShopLoot();
+			TriggerGameActionBars(gameTicks);
+			if(purchaseLoot)
+			{
+				_sut.PurchaseLoot(loot.First());
+			}
+			
+			// Act
+			bool result = _sut.CanPurchaseLoot(loot.First());
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 0, false)]
+		[TestCase(5, 0, false)]
+		[TestCase(10, 0, false)]
+		[TestCase(50, 1, true)]
+		[TestCase(55, 0, false)]
+		[TestCase(100, 2, true)]
+		public void PurchaseLoot(int gameTicks, int expected, bool purchaseAllLootPossible)
+		{
+			// Arrange
+			List<Loot> loot = _sut.GetShopLoot();
+			TriggerGameActionBars(gameTicks);
+			int initialLootCount = _sut.GetLoot().Count;
+
+			// Act
+			while (purchaseAllLootPossible && _sut.CanPurchaseLoot(loot.First()))
+			{
+				_sut.PurchaseLoot(loot.First());
+			}
+			int result = _sut.GetLoot().Count;
+
+			// Assert
+			Assert.AreEqual(expected + initialLootCount, result);
+		}
+		#endregion
+
 		#region Military
 		[TestCase(0, 1, MilitaryType.Melee)]
 		[TestCase(10, 1, MilitaryType.Melee)]

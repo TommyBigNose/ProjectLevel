@@ -15,6 +15,8 @@ namespace ProjectLevel.Contracts.v1.Models
         public int GoldValue { get; set; } = 0;
         public int GoldIncome { get; set; } = 0;
         public float GoldSpeedRatio { get; set; } = 0.0f;
+        public bool IsShopItem { get; set; } = false;
+
         public List<MilitaryLootStat> MilitaryLootStats { get; set; } = new List<MilitaryLootStat>();
 
         public bool ContainsMilitaryLootStatsForType(MilitaryType militaryType)

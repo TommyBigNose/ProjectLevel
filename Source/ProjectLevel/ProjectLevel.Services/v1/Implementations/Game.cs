@@ -73,6 +73,24 @@ namespace ProjectLevel.Services.v1.Implementations
 		}
 		#endregion
 
+		#region Shop
+		public List<Loot> GetShopLoot()
+		{
+			return _dataSource.GetAvailableLoot().FindAll(_=>_.IsShopItem);
+		}
+
+		public bool CanPurchaseLoot(Loot loot)
+		{
+			return _civilization.Economy.Gold >= loot.GoldValue;
+		}
+
+		public void PurchaseLoot(Loot loot)
+		{
+			_civilization.Economy.Gold -= loot.GoldValue;
+			_civilization.ItemChest.Inventory.Add(loot);
+		}
+		#endregion
+
 		#region Military
 		public int GetMilitaryUnitCount(MilitaryType militaryType)
 		{

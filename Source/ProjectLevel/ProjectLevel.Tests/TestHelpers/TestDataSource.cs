@@ -21,9 +21,9 @@ namespace ProjectLevel.Tests.TestHelpers
 					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
-
 					GoldIncome = 0,
 					GoldSpeedRatio = 100.0f,
+					IsShopItem = false,
 					MilitaryLootStats = new List<MilitaryLootStat>()
 				},
 				new Loot()
@@ -32,9 +32,9 @@ namespace ProjectLevel.Tests.TestHelpers
 					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
-
 					GoldIncome = 0,
 					GoldSpeedRatio = 0.0f,
+					IsShopItem = true,
 					MilitaryLootStats = new List<MilitaryLootStat>
 					{
 						new MilitaryLootStat()
@@ -52,9 +52,9 @@ namespace ProjectLevel.Tests.TestHelpers
 					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
-
 					GoldIncome = 0,
 					GoldSpeedRatio = 0.0f,
+					IsShopItem = true,
 					MilitaryLootStats = new List<MilitaryLootStat>
 					{
 						new MilitaryLootStat()
@@ -72,9 +72,9 @@ namespace ProjectLevel.Tests.TestHelpers
 					ImageResourceString = "Default.png",
 					Level = 1,
 					GoldValue = 5,
-
 					GoldIncome = 0,
 					GoldSpeedRatio = 0.0f,
+					IsShopItem = true,
 					MilitaryLootStats = new List<MilitaryLootStat>
 					{
 						new MilitaryLootStat()

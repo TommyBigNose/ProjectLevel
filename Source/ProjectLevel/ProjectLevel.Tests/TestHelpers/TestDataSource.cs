@@ -40,7 +40,7 @@ namespace ProjectLevel.Tests.TestHelpers
 						new MilitaryLootStat()
 						{
 							MilitaryType = MilitaryType.Melee,
-							DamageRatio = 0.1f,
+							DamageRatio = 0.2f,
 							SpeedRatio = 100.0f,
 							RecruitRatio = 0.0f
 						}
@@ -60,7 +60,7 @@ namespace ProjectLevel.Tests.TestHelpers
 						new MilitaryLootStat()
 						{
 							MilitaryType = MilitaryType.Ranged,
-							DamageRatio = 0.1f,
+							DamageRatio = 0.2f,
 							SpeedRatio = 100.0f,
 							RecruitRatio = 0.0f
 						}
@@ -80,7 +80,7 @@ namespace ProjectLevel.Tests.TestHelpers
 						new MilitaryLootStat()
 						{
 							MilitaryType = MilitaryType.Siege,
-							DamageRatio = 0.1f,
+							DamageRatio = 0.2f,
 							SpeedRatio = 100.0f,
 							RecruitRatio = 0.0f
 						}

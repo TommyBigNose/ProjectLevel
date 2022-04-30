@@ -97,6 +97,18 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// Assert
 			Assert.AreEqual(expected, result);
 		}
+
+		[TestCase(0)]
+		public void RemoveAllLoot(int expected)
+		{
+			// Arrange
+			// Act
+			_sut.RemoveAllLoot();
+			var result = _sut.GetLoot().Count;
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
 		#endregion
 
 		#region Gold
@@ -211,7 +223,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void GetShopLoot(int getLootCount, int expected)
 		{
 			// Arrange
-			List<Loot> loot = new List<Loot>();
+			List<Loot> loot = new();
 
 			// Act
 			for (int i = 0; i < getLootCount; i++)
@@ -298,25 +310,59 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 1, MilitaryType.Melee)]
-		[TestCase(10, 1, MilitaryType.Melee)]
-		[TestCase(20, 1, MilitaryType.Melee)]
-		[TestCase(100, 1, MilitaryType.Melee)]
-		[TestCase(0, 1, MilitaryType.Ranged)]
-		[TestCase(10, 1, MilitaryType.Ranged)]
-		[TestCase(20, 1, MilitaryType.Ranged)]
-		[TestCase(100, 1, MilitaryType.Ranged)]
-		[TestCase(0, 1, MilitaryType.Siege)]
-		[TestCase(10, 1, MilitaryType.Siege)]
-		[TestCase(20, 1, MilitaryType.Siege)]
-		[TestCase(100, 1, MilitaryType.Siege)]
-		public void GetMilitaryLevel(int gameTicks, int expected, MilitaryType militaryType)
+		[TestCase(0, 1, false, MilitaryType.Melee)]
+		[TestCase(10, 1, false, MilitaryType.Melee)]
+		[TestCase(20, 1, false, MilitaryType.Melee)]
+		[TestCase(100, 2, true, MilitaryType.Melee)]
+		[TestCase(0, 1, false, MilitaryType.Ranged)]
+		[TestCase(10, 1, false, MilitaryType.Ranged)]
+		[TestCase(20, 1, false, MilitaryType.Ranged)]
+		[TestCase(100, 2, true, MilitaryType.Ranged)]
+		[TestCase(0, 1, false, MilitaryType.Siege)]
+		[TestCase(10, 1, false, MilitaryType.Siege)]
+		[TestCase(20, 1, false, MilitaryType.Siege)]
+		[TestCase(100, 2, true, MilitaryType.Siege)]
+		public void GetMilitaryLevel(int gameTicks, int expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
+			if (upgrade) _sut.UpgradeMilitaryLevel(militaryType);
 
 			// Act
 			var result = _sut.GetMilitaryLevel(militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(0, 1, false, false, false, MilitaryType.Melee)]
+		[TestCase(10, 1, false, false, false, MilitaryType.Melee)]
+		[TestCase(100, 2, true, false, false, MilitaryType.Melee)]
+		[TestCase(100, 4, true, true, false, MilitaryType.Melee)]
+		[TestCase(100, 5, true, true, true, MilitaryType.Melee)]
+		[TestCase(0, 1, false, false, false, MilitaryType.Ranged)]
+		[TestCase(10, 1, false, false, false, MilitaryType.Ranged)]
+		[TestCase(20, 1, false, false, false, MilitaryType.Ranged)]
+		[TestCase(100, 2, true, false, false, MilitaryType.Ranged)]
+		[TestCase(100, 4, true, true, false, MilitaryType.Ranged)]
+		[TestCase(100, 5, true, true, true, MilitaryType.Ranged)]
+		[TestCase(0, 1, false, false, false, MilitaryType.Siege)]
+		[TestCase(10, 1, false, false, false, MilitaryType.Siege)]
+		[TestCase(20, 1, false, false, false, MilitaryType.Siege)]
+		[TestCase(100, 2, true, false, false, MilitaryType.Siege)]
+		[TestCase(100, 4, true, true, false, MilitaryType.Siege)]
+		[TestCase(100, 5, true, true, true, MilitaryType.Siege)]
+		public void GetMilitaryDamage(int gameTicks, int expected, bool upgradeLevel, bool addUnit, bool hasLoot, MilitaryType militaryType)
+		{
+			// Arrange
+			if (!hasLoot) _sut.RemoveAllLoot();
+			
+			TriggerGameActionBars(gameTicks);
+			if (upgradeLevel) _sut.UpgradeMilitaryLevel(militaryType);
+			if (addUnit) _sut.UpgradeMilitaryUnitCount(militaryType);
+
+			// Act
+			var result = _sut.GetMilitaryDamage(militaryType);
 
 			// Assert
 			Assert.AreEqual(expected, result);

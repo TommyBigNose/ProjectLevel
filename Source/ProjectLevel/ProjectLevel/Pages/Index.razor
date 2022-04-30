@@ -15,6 +15,19 @@
 
 <h3>Debug Crap</h3>
 <button class="btn btn-primary" @onclick=@GetAllItems>Get all Items</button>
+<br />
+<hr />
+
+<h3>Economy</h3>
+Gold: <label id="lblGold">@game.GetGold()</label>
+<br />
+Gold Income Rate: <label id="lblGoldLevel">@game.GetGoldIncomeRate()</label>
+<br />
+Gold Action: <progress id="progGold" value="@game.GetGoldActionBarValue()" max="@Constants.ActionBarMax"></progress>
+<br />
+<button class="btn btn-primary" style="background-color:yellow; color:black;" @onclick="UpgradeGoldLevel" disabled="@ShouldButtonBeClickable(game.CanUpgradeGoldLevel)">Upgrade Economy!</button>
+<br />
+<hr />
 
 <h3>Military</h3>
 <table class="table table-striped">
@@ -59,6 +72,68 @@
     </tr>
   </tbody>
 </table>
+
+
+<br />
+<hr />
+
+<h3>Shop</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width:10%" scope="col">Image</th>
+      <th style="width:10%" scope="col">Name</th>
+      <th style="width:10%" scope="col">Level</th>
+      <th style="width:10%" scope="col">Gold Value</th>
+      <th style="width:20%" scope="col">Purchase</th>
+      <th style="width:10%" scope="col">Gold Income</th>
+      <th style="width:10%" scope="col">Gold Speed Ratio</th>
+      <th style="width:20%" scope="col">Military Stats....</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+      @foreach(var loot in @game.GetShopLoot())
+      {
+        <tr>
+            <td><img src="images/@loot.ImageResourceString"/></td>
+            <td>@loot.Name</td>
+            <td>@loot.Level</td>
+            <td>@loot.GoldValue</td>
+            <td><button class="btn btn-primary" style="background-color:black; color:white;" @onclick="@(_ => game.PurchaseLoot(@loot))" disabled="@ShouldButtonBeClickable(() => game.CanPurchaseLoot(@loot))">+</button></td>
+            <td>@loot.GoldIncome</td>
+            <td>@loot.GoldSpeedRatio</td>
+            <td>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                         <th style="width:25%" scope="col">MilitaryType</th>
+                         <th style="width:25%" scope="col">DamageRatio</th>
+                         <th style="width:25%" scope="col">RecruitRatio</th>
+                         <th style="width:25%" scope="col">SpeedRatio</th>
+                    </tr>
+                </thead>
+            
+                <tbody>
+                    @foreach(var militaryStat in @loot.MilitaryLootStats)
+                    {
+                         <tr>
+                             <td>@militaryStat.MilitaryType</td>
+                             <td>@militaryStat.DamageRatio</td>
+                             <td>@militaryStat.RecruitRatio</td>
+                             <td>@militaryStat.SpeedRatio</td>
+                         </tr>
+                    }
+                </tbody>
+            </table>
+            </td>
+        </tr>
+      }
+  </tbody>
+</table>
+
+<br />
+<hr />
 
 <h3>Inventory</h3>
 <table class="table table-striped">
@@ -111,28 +186,35 @@
         </tr>
       }
   </tbody>
-  @*<tbody>
-    <tr>
-      <td>@game.GetAvailableLoot()</td>
-      
-    </tr>
-  </tbody>*@
 </table>
 
+
+
+
+
+
+
+
+
+
+
+<br />
+<hr />
+
+<br />
+<hr />
+
+<br />
+<hr />
+
+<br />
+<hr />
 
 Your current Civilization info: 
 <br />
 <hr />
 
-Gold: <label id="lblGold">@game.GetGold()</label>
-<br />
-Gold Income Rate: <label id="lblGoldLevel">@game.GetGoldIncomeRate()</label>
-<br />
-Gold Action: <progress id="progGold" value="@game.GetGoldActionBarValue()" max="@Constants.ActionBarMax"></progress>
-<br />
-<button class="btn btn-primary" style="background-color:yellow; color:black;" @onclick="UpgradeGoldLevel" disabled="@ShouldButtonBeClickable(game.CanUpgradeGoldLevel)">Upgrade Economy!</button>
-<br />
-<hr />
+
 
 Melee Unit Count: <label id="lblMeleeUnitCount">@game.GetMilitaryUnitCount(Constants.MilitaryType.Melee)</label>
 <br />

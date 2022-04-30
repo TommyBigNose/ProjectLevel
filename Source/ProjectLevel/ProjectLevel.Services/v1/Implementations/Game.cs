@@ -39,6 +39,11 @@ namespace ProjectLevel.Services.v1.Implementations
 		{
 			_civilization.ItemChest.Inventory.AddRange(loot);
 		}
+
+		public void RemoveAllLoot()
+		{
+			_civilization.ItemChest.Inventory.Clear();
+		}
 		#endregion
 
 		#region Gold
@@ -104,7 +109,9 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public int GetMilitaryDamage(MilitaryType militaryType)
 		{
-			return _civilization.Military.GetUnitDamage(militaryType);
+			float ratio = 1.0f + _civilization.ItemChest.GetStatsForMilitaryType(militaryType).Sum(_ => _.DamageRatio);
+			double result = Math.Round(_civilization.Military.GetUnitDamage(militaryType) * ratio);
+			return (int)result;
 		}
 
 		public float GetMilitaryActionBarValue(MilitaryType militaryType)

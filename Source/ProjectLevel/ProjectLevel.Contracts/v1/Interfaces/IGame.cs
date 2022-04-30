@@ -17,6 +17,7 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		#region Civilization
 		void AddLoot(List<Loot> loot);
 		List<Loot> GetLoot();
+		void RemoveAllLoot();
 		#endregion
 
 		#region Gold

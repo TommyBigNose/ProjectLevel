@@ -37,7 +37,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(0, 4)]
 		[TestCase(1, 4)]
 		[TestCase(2, 4)]
-		public void GetAvailableLoot(int addLootCount, int expected)
+		public void Data_GetAvailableLoot(int addLootCount, int expected)
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
@@ -59,7 +59,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(0, 0)]
 		[TestCase(1, 4)]
 		[TestCase(2, 8)]
-		public void AddLoot(int addLootCount, int expected)
+		public void Civilization_AddLoot(int addLootCount, int expected)
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
@@ -79,7 +79,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(0, 0)]
 		[TestCase(1, 4)]
 		[TestCase(2, 8)]
-		public void GetLoot(int addLootCount, int expected)
+		public void Civilization_GetLoot(int addLootCount, int expected)
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
@@ -99,7 +99,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		}
 
 		[TestCase(0)]
-		public void RemoveAllLoot(int expected)
+		public void Civilization_RemoveAllLoot(int expected)
 		{
 			// Arrange
 			// Act
@@ -115,7 +115,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(0, 0)]
 		[TestCase(10, 1)]
 		[TestCase(20, 2)]
-		public void GetGold(int gameTicks, int expected)
+		public void Gold_GetGold(int gameTicks, int expected)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -131,7 +131,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, 1, false)]
 		[TestCase(20, 1, false)]
 		[TestCase(100, 2, true)]
-		public void GetGoldIncomeRate(int gameTicks, int expected, bool upgrade)
+		public void Gold_GetGoldIncomeRate(int gameTicks, int expected, bool upgrade)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -148,7 +148,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, 10, false)]
 		[TestCase(20, 10, false)]
 		[TestCase(100, 20, true)]
-		public void RequiredGoldToLevelUp(int gameTicks, int expected, bool upgrade)
+		public void Gold_RequiredGoldToLevelUp(int gameTicks, int expected, bool upgrade)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -166,7 +166,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(20, false, false)]
 		[TestCase(100, true, false)]
 		[TestCase(100, false, true)]
-		public void CanUpgradeGoldLevel(int gameTicks, bool expected, bool upgrade)
+		public void Gold_CanUpgradeGoldLevel(int gameTicks, bool expected, bool upgrade)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -183,7 +183,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(1, 2)]
 		[TestCase(2, 3)]
 		[TestCase(100, 101)]
-		public void UpgradeGoldLevel(int upgradeCount, int expected)
+		public void Gold_UpgradeGoldLevel(int upgradeCount, int expected)
 		{
 			// Arrange
 			// Act
@@ -203,7 +203,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(11, 101.0f, false)]
 		[TestCase(20, 0.0f, false)]
 		[TestCase(100, 0.0f, false)]
-		public void GetGoldActionBarValue(int gameTicks, float expected, bool upgrade)
+		public void Gold_GetGoldActionBarValue(int gameTicks, float expected, bool upgrade)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -220,7 +220,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#region Shop
 		[TestCase(1, 3)]
 		[TestCase(2, 6)]
-		public void GetShopLoot(int getLootCount, int expected)
+		public void Shop_GetShopLoot(int getLootCount, int expected)
 		{
 			// Arrange
 			List<Loot> loot = new();
@@ -243,7 +243,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(50, true, false)]
 		[TestCase(55, false, true)]
 		[TestCase(100, true, true)]
-		public void CanPurchaseLoot(int gameTicks, bool expected, bool purchaseLoot)
+		public void Shop_CanPurchaseLoot(int gameTicks, bool expected, bool purchaseLoot)
 		{
 			// Arrange
 			List<Loot> loot = _sut.GetShopLoot();
@@ -266,7 +266,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(50, 1, true)]
 		[TestCase(55, 0, false)]
 		[TestCase(100, 2, true)]
-		public void PurchaseLoot(int gameTicks, int expected, bool purchaseAllLootPossible)
+		public void Shop_PurchaseLoot(int gameTicks, int expected, bool purchaseAllLootPossible)
 		{
 			// Arrange
 			List<Loot> loot = _sut.GetShopLoot();
@@ -298,7 +298,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, 1, MilitaryType.Siege)]
 		[TestCase(20, 1, MilitaryType.Siege)]
 		[TestCase(100, 1, MilitaryType.Siege)]
-		public void GetMilitaryUnitCount(int gameTicks, int expected, MilitaryType militaryType)
+		public void Military_GetMilitaryUnitCount(int gameTicks, int expected, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -322,7 +322,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, 1, false, MilitaryType.Siege)]
 		[TestCase(20, 1, false, MilitaryType.Siege)]
 		[TestCase(100, 2, true, MilitaryType.Siege)]
-		public void GetMilitaryLevel(int gameTicks, int expected, bool upgrade, MilitaryType militaryType)
+		public void Military_GetMilitaryLevel(int gameTicks, int expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -352,7 +352,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(100, 2, true, false, false, MilitaryType.Siege)]
 		[TestCase(100, 4, true, true, false, MilitaryType.Siege)]
 		[TestCase(100, 5, true, true, true, MilitaryType.Siege)]
-		public void GetMilitaryDamage(int gameTicks, int expected, bool upgradeLevel, bool addUnit, bool hasLoot, MilitaryType militaryType)
+		public void Military_GetMilitaryDamage(int gameTicks, int expected, bool upgradeLevel, bool addUnit, bool hasLoot, MilitaryType militaryType)
 		{
 			// Arrange
 			if (!hasLoot) _sut.RemoveAllLoot();
@@ -380,7 +380,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, false, MilitaryType.Siege)]
 		[TestCase(20, false, MilitaryType.Siege)]
 		[TestCase(100, true, MilitaryType.Siege)]
-		public void CanUpgradeMilitaryLevel(int gameTicks, bool expected, MilitaryType militaryType)
+		public void Military_CanUpgradeMilitaryLevel(int gameTicks, bool expected, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -407,7 +407,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(20, false, false, MilitaryType.Siege)]
 		[TestCase(100, true, false, MilitaryType.Siege)]
 		[TestCase(100, false, true, MilitaryType.Siege)]
-		public void UpgradeMilitaryLevel(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
+		public void Military_UpgradeMilitaryLevel(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -432,7 +432,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(10, false, MilitaryType.Siege)]
 		[TestCase(20, false, MilitaryType.Siege)]
 		[TestCase(100, true, MilitaryType.Siege)]
-		public void CanUpgradeMilitaryUnitCount(int gameTicks, bool expected, MilitaryType militaryType)
+		public void Military_CanUpgradeMilitaryUnitCount(int gameTicks, bool expected, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -459,7 +459,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(20, false, false, MilitaryType.Siege)]
 		[TestCase(100, true, false, MilitaryType.Siege)]
 		[TestCase(100, false, true, MilitaryType.Siege)]
-		public void UpgradeMilitaryUnitCount(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
+		public void Military_UpgradeMilitaryUnitCount(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);
@@ -490,7 +490,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(11, 101.0f, false, MilitaryType.Siege)]
 		[TestCase(20, 0.0f, false, MilitaryType.Siege)]
 		[TestCase(100, 0.0f, false, MilitaryType.Siege)]
-		public void GetMilitaryActionBarValue(int gameTicks, float expected, bool upgrade, MilitaryType militaryType)
+		public void Military_GetMilitaryActionBarValue(int gameTicks, float expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
 			TriggerGameActionBars(gameTicks);

@@ -142,6 +142,19 @@ namespace ProjectLevel.Services.v1.Implementations
 		}
 		#endregion
 
+		#region Enemy
+		public EnemyTown GetNewEnemyTown(int level)
+		{
+			// TODO: Some kind of factory or something?
+			EnemyTown enemy = new()
+			{
+				Level = level,
+			};
+
+			return enemy;
+		}
+		#endregion
+
 		public void TriggerAllActionBars()
 		{
 			_civilization.TriggerAllActionBars();

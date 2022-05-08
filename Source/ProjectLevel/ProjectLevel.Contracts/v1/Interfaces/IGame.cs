@@ -46,6 +46,10 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		float GetMilitaryActionBarValue(MilitaryType militaryType);
 		#endregion
 
+		#region Enemy
+		EnemyTown GetNewEnemyTown(int level);
+		#endregion
+
 		void TriggerAllActionBars();
 		
 		

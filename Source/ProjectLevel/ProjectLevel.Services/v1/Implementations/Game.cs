@@ -14,12 +14,14 @@ namespace ProjectLevel.Services.v1.Implementations
 	{
 		private readonly IDataSource _dataSource;
 		private readonly Civilization _civilization;
+		private EnemyTown _enemyTown;
 
 		public Game(IDataSource dataSource)
 		{
 			_dataSource = dataSource;
 
 			_civilization = new Civilization();
+			_enemyTown = GetNewEnemyTown(1);
 		}
 
 		#region Data
@@ -143,15 +145,28 @@ namespace ProjectLevel.Services.v1.Implementations
 		#endregion
 
 		#region Enemy
+		public EnemyTown GetCurrentEnemyTown()
+		{
+			return _enemyTown;
+		}
+
 		public EnemyTown GetNewEnemyTown(int level)
 		{
 			// TODO: Some kind of factory or something?
-			EnemyTown enemy = new()
-			{
-				Level = level,
-			};
-
+			EnemyTown enemy = new("Test Town", level);
 			return enemy;
+		}
+
+		public void SetCurrentEnemyTown(EnemyTown enemyTown)
+		{
+			_enemyTown = enemyTown;
+		}
+
+		public int CalculateDamageToEnemyTown(int attackDamage, MilitaryType militaryType)
+		{
+			int defense = _enemyTown.Military.GetUnitDamage(militaryType);
+			int output = (attackDamage - defense > 0)?(attackDamage - defense):0;
+			return output;
 		}
 		#endregion
 

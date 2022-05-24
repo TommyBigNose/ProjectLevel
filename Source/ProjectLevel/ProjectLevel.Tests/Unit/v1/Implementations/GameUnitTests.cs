@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
 using ProjectLevel.Contracts.v1.Models;
 using ProjectLevel.Services.v1.Implementations;
@@ -506,6 +507,21 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#endregion
 
 		#region Enemy
+		[Test]
+		public void Enemy_GetCurrentEnemyTown()
+		{
+			// Arrange
+			// Act
+			var enemy = _sut.GetCurrentEnemyTown();
+			int enemyLevel = enemy.Level;
+
+			// Assert
+			Assert.IsFalse(string.IsNullOrWhiteSpace(enemy.Name));
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.GoldValue);
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.HpCurrent);
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.HpMax);
+		}
+
 		[TestCase(1)]
 		[TestCase(10)]
 		public void Enemy_GetNewEnemyTown(int enemyLevel)
@@ -516,6 +532,46 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 
 			// Assert
 			Assert.AreEqual(enemyLevel, enemy.Level);
+			Assert.IsFalse(string.IsNullOrWhiteSpace(enemy.Name));
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.GoldValue);
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.HpCurrent);
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.HpMax);
+		}
+
+		[TestCase(1)]
+		[TestCase(10)]
+		public void Enemy_SetCurrentEnemyTown(int enemyLevel)
+		{
+			// Arrange
+			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+
+			// Act
+			_sut.SetCurrentEnemyTown(enemy);
+			enemy = _sut.GetCurrentEnemyTown();
+
+			// Assert
+			Assert.AreEqual(enemyLevel, enemy.Level);
+			Assert.IsFalse(string.IsNullOrWhiteSpace(enemy.Name));
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.GoldValue);
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.HpCurrent);
+			Assert.AreEqual(enemyLevel * Constants.BaseEnemyScaling, enemy.HpMax);
+		}
+
+		[TestCase(1, 1, 0, MilitaryType.Melee)]
+		[TestCase(1, 5, 4, MilitaryType.Melee)]
+		[TestCase(2, 10, 6, MilitaryType.Melee)]
+		[TestCase(2, 20, 16, MilitaryType.Melee)]
+		public void Enenmy_TakeAttack(int enemyLevel, int attackDamage, int expected, MilitaryType militaryType)
+		{
+			// Arrange
+			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			_sut.SetCurrentEnemyTown(enemy);
+
+			// Act
+			var result = _sut.CalculateDamageToEnemyTown(attackDamage, militaryType);
+
+			// Assert
+			Assert.AreEqual(expected, result);
 		}
 		#endregion
 

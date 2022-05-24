@@ -10,6 +10,7 @@ namespace ProjectLevel.Contracts.v1
 	{
 		public const float ActionBarMax = 1000.0f; 
 		public const int GoldPerLevelCost = 10;
+		public const int BaseEnemyScaling = 5;
 
 		public enum MilitaryType
 		{

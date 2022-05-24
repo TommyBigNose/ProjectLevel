@@ -47,7 +47,10 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		#endregion
 
 		#region Enemy
+		EnemyTown GetCurrentEnemyTown();
 		EnemyTown GetNewEnemyTown(int level);
+		void SetCurrentEnemyTown(EnemyTown enemyTown);
+		int CalculateDamageToEnemyTown(int attackDamage, MilitaryType militaryType);
 		#endregion
 
 		void TriggerAllActionBars();

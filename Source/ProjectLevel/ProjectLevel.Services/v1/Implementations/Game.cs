@@ -153,7 +153,7 @@ namespace ProjectLevel.Services.v1.Implementations
 		public EnemyTown GetNewEnemyTown(int level)
 		{
 			// TODO: Some kind of factory or something?
-			EnemyTown enemy = new("Test Town", level);
+			EnemyTown enemy = new("Test Town", level, GetAvailableLoot().First());
 			return enemy;
 		}
 
@@ -177,6 +177,14 @@ namespace ProjectLevel.Services.v1.Implementations
 		public bool IsEnemyTownDestroyed()
 		{
 			return _enemyTown.IsTownDestroyed();
+		}
+		#endregion
+
+		#region Battle
+		public void RewardPlayerItemFromEnemyTown()
+		{
+			_civilization.Economy.Gold += _enemyTown.GoldValue;
+			AddLoot(new List<Loot> { _enemyTown.Loot });
 		}
 		#endregion
 

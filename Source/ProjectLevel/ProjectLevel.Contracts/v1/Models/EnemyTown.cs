@@ -14,28 +14,31 @@ namespace ProjectLevel.Contracts.v1.Models
         public int HpCurrent { get; private set; } = 0;
         public int HpMax { get; private set; } = 0;
         public int GoldValue { get; private set; } = 0;
+        public Loot Loot { get; private set; }
         public Military Military { get; private set; } = new Military();
 
-        public EnemyTown(string name, int level)
+        public EnemyTown(string name, int level, Loot loot)
 		{
-            Name = name;
-            Level = level;
-            HpCurrent = level * Constants.BaseEnemyScaling;
-            HpMax = level * Constants.BaseEnemyScaling;
-            GoldValue = level * Constants.BaseEnemyScaling;
+			Name = name;
+			Level = level;
+			HpCurrent = level * Constants.BaseEnemyScaling;
+			HpMax = level * Constants.BaseEnemyScaling;
+			GoldValue = level * Constants.BaseEnemyScaling;
+			Loot = loot;
 
-            for(int i = 1; i < level; i++)
+			for (int i = 1; i < level; i++)
 			{
-                Military.UpgradeUnitCount(Constants.MilitaryType.Melee);
-                Military.UpgradeUnitCount(Constants.MilitaryType.Ranged);
-                Military.UpgradeUnitCount(Constants.MilitaryType.Siege);
-                Military.UpgradeUnitLevel(Constants.MilitaryType.Melee);
-                Military.UpgradeUnitLevel(Constants.MilitaryType.Ranged);
-                Military.UpgradeUnitLevel(Constants.MilitaryType.Siege);
-            }
-        }
+				Military.UpgradeUnitCount(Constants.MilitaryType.Melee);
+				Military.UpgradeUnitCount(Constants.MilitaryType.Ranged);
+				Military.UpgradeUnitCount(Constants.MilitaryType.Siege);
 
-        public void ApplyDamage(int attackDamage)
+				Military.UpgradeUnitLevel(Constants.MilitaryType.Melee);
+				Military.UpgradeUnitLevel(Constants.MilitaryType.Ranged);
+				Military.UpgradeUnitLevel(Constants.MilitaryType.Siege);
+			}
+		}
+
+		public void ApplyDamage(int attackDamage)
 		{
             if(HpCurrent - attackDamage <= 0)
 			{

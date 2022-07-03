@@ -614,6 +614,48 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// Assert
 			Assert.AreEqual(expectedTownDestroyed, result);
 		}
+
+		//[TestCase(1, 1, MilitaryType.Melee)]
+		//[TestCase(1, 5, MilitaryType.Melee)]
+		//[TestCase(2, 10, MilitaryType.Melee)]
+		//[TestCase(2, 20, MilitaryType.Melee)]
+		//public void Enemy_(int enemyLevel, int attackDamage, MilitaryType militaryType)
+		//{
+		//	// Arrange
+		//	EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+		//	_sut.SetCurrentEnemyTown(enemy);
+		//	var damage = _sut.CalculateDamageToEnemyTown(attackDamage, militaryType);
+
+		//	// Act
+		//	_sut.ApplyDamageToEnemyTown(damage);
+		//	var result = _sut.IsEnemyTownDestroyed();
+		//	var expectedTownDestroyed = (damage >= _sut.GetCurrentEnemyTown().HpMax) ? true : false;
+
+		//	// Assert
+		//	Assert.AreEqual(expectedTownDestroyed, result);
+		//}
+		#endregion
+
+		#region Battle
+		[TestCase(1)]
+		[TestCase(2)]
+		[TestCase(10)]
+		public void Battle_RewardPlayerItemFromEnemyTown(int enemyLevel)
+		{
+			// Arrange
+			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			_sut.SetCurrentEnemyTown(enemy);
+			int currentLoot = _sut.GetLoot().Count;
+
+			int currentGold = _sut.GetGold();
+
+			// Act
+			_sut.RewardPlayerItemFromEnemyTown();
+
+			// Assert
+			Assert.AreEqual(currentLoot + 1, _sut.GetLoot().Count);
+			Assert.AreEqual(currentGold + (enemyLevel * Constants.BaseEnemyScaling), _sut.GetGold());
+		}
 		#endregion
 
 		private void TriggerGameActionBars(int amount)

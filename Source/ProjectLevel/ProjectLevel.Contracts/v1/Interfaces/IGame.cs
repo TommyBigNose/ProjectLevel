@@ -55,6 +55,10 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		bool IsEnemyTownDestroyed();
 		#endregion
 
+		#region Battle
+		void RewardPlayerItemFromEnemyTown();
+		#endregion
+
 		void TriggerAllActionBars();
 		
 		

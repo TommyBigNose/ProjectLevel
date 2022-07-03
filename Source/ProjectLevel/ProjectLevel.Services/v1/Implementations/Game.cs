@@ -168,6 +168,16 @@ namespace ProjectLevel.Services.v1.Implementations
 			int output = (attackDamage - defense > 0)?(attackDamage - defense):0;
 			return output;
 		}
+
+		public void ApplyDamageToEnemyTown(int attackDamage)
+		{
+			_enemyTown.ApplyDamage(attackDamage);
+		}
+		
+		public bool IsEnemyTownDestroyed()
+		{
+			return _enemyTown.IsTownDestroyed();
+		}
 		#endregion
 
 		public void TriggerAllActionBars()

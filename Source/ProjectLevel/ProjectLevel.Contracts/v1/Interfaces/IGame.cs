@@ -51,6 +51,8 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		EnemyTown GetNewEnemyTown(int level);
 		void SetCurrentEnemyTown(EnemyTown enemyTown);
 		int CalculateDamageToEnemyTown(int attackDamage, MilitaryType militaryType);
+		void ApplyDamageToEnemyTown(int attackDamage);
+		bool IsEnemyTownDestroyed();
 		#endregion
 
 		void TriggerAllActionBars();

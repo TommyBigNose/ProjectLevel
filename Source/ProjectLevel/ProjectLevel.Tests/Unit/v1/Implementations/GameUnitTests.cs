@@ -561,7 +561,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(1, 5, 4, MilitaryType.Melee)]
 		[TestCase(2, 10, 6, MilitaryType.Melee)]
 		[TestCase(2, 20, 16, MilitaryType.Melee)]
-		public void Enenmy_TakeAttack(int enemyLevel, int attackDamage, int expected, MilitaryType militaryType)
+		public void Enenmy_CalculateDamageToEnemyTown(int enemyLevel, int attackDamage, int expected, MilitaryType militaryType)
 		{
 			// Arrange
 			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
@@ -572,6 +572,47 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 
 			// Assert
 			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(1, 1, MilitaryType.Melee)]
+		[TestCase(1, 5, MilitaryType.Melee)]
+		[TestCase(2, 10, MilitaryType.Melee)]
+		[TestCase(2, 20, MilitaryType.Melee)]
+		public void Enemy_ApplyDamageToEnemyTown(int enemyLevel, int attackDamage, MilitaryType militaryType)
+		{
+			// Arrange
+			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			_sut.SetCurrentEnemyTown(enemy);
+			var damage = _sut.CalculateDamageToEnemyTown(attackDamage, militaryType);
+
+			// Act
+			_sut.ApplyDamageToEnemyTown(damage);
+			var result = _sut.GetCurrentEnemyTown().HpMax - _sut.GetCurrentEnemyTown().HpCurrent;
+			var expectedDamage = (damage >= _sut.GetCurrentEnemyTown().HpMax) ? _sut.GetCurrentEnemyTown().HpMax : damage;
+			
+			
+			// Assert
+			Assert.AreEqual(expectedDamage, result);
+		}
+
+		[TestCase(1, 1, MilitaryType.Melee)]
+		[TestCase(1, 5, MilitaryType.Melee)]
+		[TestCase(2, 10, MilitaryType.Melee)]
+		[TestCase(2, 20, MilitaryType.Melee)]
+		public void Enemy_IsEnemyTownDestroyed(int enemyLevel, int attackDamage, MilitaryType militaryType)
+		{
+			// Arrange
+			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			_sut.SetCurrentEnemyTown(enemy);
+			var damage = _sut.CalculateDamageToEnemyTown(attackDamage, militaryType);
+
+			// Act
+			_sut.ApplyDamageToEnemyTown(damage);
+			var result = _sut.IsEnemyTownDestroyed();
+			var expectedTownDestroyed = (damage >= _sut.GetCurrentEnemyTown().HpMax) ? true : false;
+			
+			// Assert
+			Assert.AreEqual(expectedTownDestroyed, result);
 		}
 		#endregion
 

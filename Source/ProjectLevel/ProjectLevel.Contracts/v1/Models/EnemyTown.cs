@@ -34,5 +34,22 @@ namespace ProjectLevel.Contracts.v1.Models
                 Military.UpgradeUnitLevel(Constants.MilitaryType.Siege);
             }
         }
+
+        public void ApplyDamage(int attackDamage)
+		{
+            if(HpCurrent - attackDamage <= 0)
+			{
+                HpCurrent = 0;
+			}
+            else
+			{
+                HpCurrent -= attackDamage;
+            }
+		}
+
+        public bool IsTownDestroyed()
+		{
+            return HpCurrent <= 0;
+		}
     }
 }

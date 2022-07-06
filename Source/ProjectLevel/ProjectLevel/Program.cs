@@ -12,6 +12,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSingleton(_ => new System.Timers.Timer());
 builder.Services.AddSingleton<IGame, Game>();
+builder.Services.AddSingleton<IMilitaryFactory, MilitaryFactory>();
 builder.Services.AddSingleton<IDataSource, LocalDataSource>();
 builder.Services.AddScoped<CommandManager>();
 

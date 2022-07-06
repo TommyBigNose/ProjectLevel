@@ -27,17 +27,6 @@ namespace ProjectLevel.Contracts.v1.Models
 			GoldValue = level * Constants.BaseEnemyScaling;
 			Loot = loot;
 			Military = military;
-
-			for (int i = 1; i < level; i++)
-			{
-				Military.UpgradeUnitCount(Constants.MilitaryType.Melee);
-				Military.UpgradeUnitCount(Constants.MilitaryType.Ranged);
-				Military.UpgradeUnitCount(Constants.MilitaryType.Siege);
-
-				Military.UpgradeUnitLevel(Constants.MilitaryType.Melee);
-				Military.UpgradeUnitLevel(Constants.MilitaryType.Ranged);
-				Military.UpgradeUnitLevel(Constants.MilitaryType.Siege);
-			}
 		}
 
 		public void ApplyDamage(int attackDamage)

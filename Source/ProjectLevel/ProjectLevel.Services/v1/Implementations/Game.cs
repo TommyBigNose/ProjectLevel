@@ -154,8 +154,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public EnemyTown GetNewEnemyTown(int level)
 		{
-			// TODO: Some kind of factory or something?
-			EnemyTown enemy = new("Test Town", level, GetAvailableLoot().First(), _militaryFactory.BuildInitialMilitary());
+			EnemyTown enemy = new("Test Town", level, GetAvailableLoot().First(), _militaryFactory.BuildMilitary(level));
 			return enemy;
 		}
 

@@ -37,5 +37,23 @@ namespace ProjectLevel.Services.v1.Implementations
 
 			return new Military(militaryUnits);
 		}
+
+		public IMilitary BuildMilitary(int level)
+		{
+			IMilitary military = BuildInitialMilitary();
+
+			for (int i = 1; i < level; i++)
+			{
+				military.UpgradeUnitCount(MilitaryType.Melee);
+				military.UpgradeUnitCount(MilitaryType.Ranged);
+				military.UpgradeUnitCount(MilitaryType.Siege);
+
+				military.UpgradeUnitLevel(MilitaryType.Melee);
+				military.UpgradeUnitLevel(MilitaryType.Ranged);
+				military.UpgradeUnitLevel(MilitaryType.Siege);
+			}
+
+			return military;
+		}
 	}
 }

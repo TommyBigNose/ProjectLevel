@@ -12,6 +12,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 {
 	public class MilitaryFactoryUnitTests
 	{
+		//private 
 		private IMilitaryFactory _sut;
 
 		[SetUp]
@@ -47,6 +48,37 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(1, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Melee));
 			Assert.AreEqual(1, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Ranged));
 			Assert.AreEqual(1, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Siege));
+		}
+
+		[TestCase(1)]
+		[TestCase(5)]
+		[TestCase(10)]
+		public void BuildMilitary(int level)
+		{
+			// Arrange
+
+
+			// Act
+			var result = _sut.BuildMilitary(level);
+
+			// Assert
+			Assert.AreEqual(level, result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Melee));
+			Assert.AreEqual(level, result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Ranged));
+			Assert.AreEqual(level, result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Siege));
+							
+			Assert.AreEqual(level, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Melee));
+			Assert.AreEqual(level, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Ranged));
+			Assert.AreEqual(level, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Siege));
+
+			Assert.AreEqual(result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Melee) 
+				* result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Melee)
+				, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Melee));
+			Assert.AreEqual(result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Ranged)
+				* result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Ranged)
+				, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Ranged));
+			Assert.AreEqual(result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Siege)
+				* result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Siege)
+				, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Siege));
 		}
 	}
 }

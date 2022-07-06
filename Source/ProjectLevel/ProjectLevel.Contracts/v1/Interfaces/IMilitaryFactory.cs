@@ -9,5 +9,6 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 	public interface IMilitaryFactory
 	{
 		IMilitary BuildInitialMilitary();
+		IMilitary BuildMilitary(int level);
 	}
 }

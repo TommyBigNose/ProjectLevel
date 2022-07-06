@@ -13,14 +13,16 @@ namespace ProjectLevel.Services.v1.Implementations
 	public class Game : IGame
 	{
 		private readonly IDataSource _dataSource;
+		private readonly IMilitaryFactory _militaryFactory;
 		private readonly Civilization _civilization;
 		private EnemyTown _enemyTown;
 
-		public Game(IDataSource dataSource)
+		public Game(IDataSource dataSource, IMilitaryFactory militaryFactory)
 		{
 			_dataSource = dataSource;
+			_militaryFactory = militaryFactory;
 
-			_civilization = new Civilization();
+			_civilization = new Civilization(_militaryFactory.BuildInitialMilitary());
 			_enemyTown = GetNewEnemyTown(1);
 		}
 
@@ -153,7 +155,7 @@ namespace ProjectLevel.Services.v1.Implementations
 		public EnemyTown GetNewEnemyTown(int level)
 		{
 			// TODO: Some kind of factory or something?
-			EnemyTown enemy = new("Test Town", level, GetAvailableLoot().First());
+			EnemyTown enemy = new("Test Town", level, GetAvailableLoot().First(), _militaryFactory.BuildInitialMilitary());
 			return enemy;
 		}
 

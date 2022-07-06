@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjectLevel.Contracts.v1.Interfaces;
 
 namespace ProjectLevel.Contracts.v1.Models
 {
@@ -15,9 +16,9 @@ namespace ProjectLevel.Contracts.v1.Models
         public int HpMax { get; private set; } = 0;
         public int GoldValue { get; private set; } = 0;
         public Loot Loot { get; private set; }
-        public Military Military { get; private set; } = new Military();
+        public IMilitary Military { get; private set; }
 
-        public EnemyTown(string name, int level, Loot loot)
+        public EnemyTown(string name, int level, Loot loot, IMilitary military)
 		{
 			Name = name;
 			Level = level;
@@ -25,6 +26,7 @@ namespace ProjectLevel.Contracts.v1.Models
 			HpMax = level * Constants.BaseEnemyScaling;
 			GoldValue = level * Constants.BaseEnemyScaling;
 			Loot = loot;
+			Military = military;
 
 			for (int i = 1; i < level; i++)
 			{

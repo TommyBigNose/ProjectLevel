@@ -16,6 +16,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 	[TestFixture]
 	public class GameUnitTests
 	{
+		private IMilitaryFactory _militaryFactory;
 		private IGame _sut;
 
 		[SetUp]
@@ -23,7 +24,8 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// TestDataSource has some special items to speed up loot timer
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource);
+			_militaryFactory = new MilitaryFactory();
+			_sut = new Game(dataSource, _militaryFactory);
 
 			_sut.AddLoot(dataSource.GetAvailableLoot());
 		}
@@ -42,7 +44,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource);
+			_sut = new Game(dataSource, _militaryFactory);
 
 			// Act
 			for (int _ = 0; _ < addLootCount; _++)
@@ -64,7 +66,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource);
+			_sut = new Game(dataSource, _militaryFactory);
 
 			// Act
 			for (int _ = 0; _ < addLootCount; _++)
@@ -84,7 +86,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource);
+			_sut = new Game(dataSource, _militaryFactory);
 
 			for (int _ = 0; _ < addLootCount; _++)
 			{
@@ -609,7 +611,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// Act
 			_sut.ApplyDamageToEnemyTown(damage);
 			var result = _sut.IsEnemyTownDestroyed();
-			var expectedTownDestroyed = (damage >= _sut.GetCurrentEnemyTown().HpMax) ? true : false;
+			var expectedTownDestroyed = (damage >= _sut.GetCurrentEnemyTown().HpMax);
 			
 			// Assert
 			Assert.AreEqual(expectedTownDestroyed, result);

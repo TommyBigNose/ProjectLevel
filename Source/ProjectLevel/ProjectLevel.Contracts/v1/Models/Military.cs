@@ -3,38 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProjectLevel.Contracts.v1.Interfaces;
 using static System.Net.Mime.MediaTypeNames;
 using static ProjectLevel.Contracts.v1.Constants;
 
 namespace ProjectLevel.Contracts.v1.Models
 {
-	public class Military
+	public class Military : IMilitary
 	{
 		private readonly List<MilitaryUnit> _militaryUnitList;
 
-		public Military()
+		public Military(List<MilitaryUnit> militaryUnitList)
 		{
-			_militaryUnitList = new List<MilitaryUnit>()
-            {
-				new MilitaryUnit()
-                {
-					MilitaryType = MilitaryType.Melee,
-					Count = 1,
-					Level = 1
-				},
-				new MilitaryUnit()
-				{
-					MilitaryType = MilitaryType.Ranged,
-					Count = 1,
-					Level = 1
-				},
-				new MilitaryUnit()
-				{
-					MilitaryType = MilitaryType.Siege,
-					Count = 1,
-					Level = 1
-				},
-			};
+			_militaryUnitList = militaryUnitList;
 		}
 
 		public int GetUnitCount(MilitaryType militaryType)
@@ -58,13 +39,13 @@ namespace ProjectLevel.Contracts.v1.Models
 		}
 
 		public void TriggerAllActionBars(ItemChest itemChest)
-        {
-			foreach(MilitaryUnit unit in _militaryUnitList)
-            {
+		{
+			foreach (MilitaryUnit unit in _militaryUnitList)
+			{
 				float ratio = 1.0f + itemChest.GetStatsForMilitaryType(unit.MilitaryType).Sum(_ => _.SpeedRatio);
 				unit.ActionBar.IncrementActionBar(unit.Count * ratio);
-            }
-        }
+			}
+		}
 
 		public int RequiredGoldToLevelUp(MilitaryType militaryType)
 		{

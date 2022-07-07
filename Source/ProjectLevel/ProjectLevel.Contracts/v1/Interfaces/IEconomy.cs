@@ -9,11 +9,11 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		int GoldLevel { get;  }
 
 		bool CanUpgradeGoldLevel();
-		void RecieveGoldIncome(ItemChest itemChest);
+		void RecieveGoldIncome(IItemChest itemChest);
 		int RequiredGoldToLevelUp();
 		void AddGold(int gold);
 		void SpendGold(int gold);
 		void UpgradeGoldLevel();
-		void TriggerAllActionBars(ItemChest itemChest);
+		void TriggerAllActionBars(IItemChest itemChest);
 	}
 }

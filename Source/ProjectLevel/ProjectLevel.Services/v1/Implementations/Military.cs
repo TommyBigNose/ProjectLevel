@@ -59,7 +59,7 @@ namespace ProjectLevel.Services.v1.Implementations
 			return _militaryUnitList.First(_ => _.MilitaryType == militaryType).ActionBar;
 		}
 
-		public void TriggerAllActionBars(ItemChest itemChest)
+		public void TriggerAllActionBars(IItemChest itemChest)
 		{
 			foreach (MilitaryUnit unit in _militaryUnitList)
 			{

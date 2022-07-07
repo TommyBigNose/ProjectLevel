@@ -14,6 +14,7 @@ namespace ProjectLevel.Services.v1.Implementations
 	{
 		private readonly IDataSource _dataSource;
 		private readonly IMilitaryFactory _militaryFactory;
+		private readonly IItemChest _itemChest;
 		private readonly Civilization _civilization;
 		private EnemyTown _enemyTown;
 
@@ -22,7 +23,8 @@ namespace ProjectLevel.Services.v1.Implementations
 			_dataSource = dataSource;
 			_militaryFactory = militaryFactory;
 
-			_civilization = new Civilization(enconomy, _militaryFactory.BuildInitialMilitary());
+			_itemChest = new ItemChest();
+			_civilization = new Civilization(enconomy, _militaryFactory.BuildInitialMilitary(), _itemChest);
 			_enemyTown = GetNewEnemyTown(1);
 		}
 

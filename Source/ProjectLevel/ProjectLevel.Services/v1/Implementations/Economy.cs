@@ -22,7 +22,7 @@ namespace ProjectLevel.Services.v1.Implementations
 			GoldActionBar = new ActionBar();
 		}
 
-		public void RecieveGoldIncome(ItemChest itemChest)
+		public void RecieveGoldIncome(IItemChest itemChest)
 		{
 			Gold += GoldLevel + itemChest.Inventory.Sum(_ => _.GoldIncome);
 			GoldActionBar.ResetActionBar();
@@ -53,7 +53,7 @@ namespace ProjectLevel.Services.v1.Implementations
 			Gold -= gold;
 		}
 
-		public void TriggerAllActionBars(ItemChest itemChest)
+		public void TriggerAllActionBars(IItemChest itemChest)
 		{
 			float ratio = 1.0f + itemChest.Inventory.Sum(_ => _.GoldSpeedRatio);
 			GoldActionBar.IncrementActionBar(GoldLevel * ratio);

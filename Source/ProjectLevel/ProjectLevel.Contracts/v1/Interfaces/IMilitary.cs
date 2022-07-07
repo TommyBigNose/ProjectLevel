@@ -12,6 +12,6 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		void UpgradeUnitCount(Constants.MilitaryType militaryType);
 		void UpgradeUnitLevel(Constants.MilitaryType militaryType);
 		ActionBar GetUnitActionBar(Constants.MilitaryType militaryType);
-		void TriggerAllActionBars(ItemChest itemChest);
+		void TriggerAllActionBars(IItemChest itemChest);
 	}
 }

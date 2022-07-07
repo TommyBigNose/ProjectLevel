@@ -13,12 +13,13 @@ namespace ProjectLevel.Contracts.v1.Models
 	{
 		public IEconomy Economy { get; set; }
 		public IMilitary Military { get; private set; }
-		public ItemChest ItemChest { get; set; } = new ItemChest();
+		public IItemChest ItemChest { get; set; }
 
-		public Civilization(IEconomy economy, IMilitary military)
+		public Civilization(IEconomy economy, IMilitary military, IItemChest itemChest)
 		{
 			Economy = economy;
 			Military = military;
+			ItemChest = itemChest;
 		}
 
 		public void TriggerAllActionBars()

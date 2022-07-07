@@ -17,12 +17,12 @@ namespace ProjectLevel.Services.v1.Implementations
 		private readonly Civilization _civilization;
 		private EnemyTown _enemyTown;
 
-		public Game(IDataSource dataSource, IMilitaryFactory militaryFactory)
+		public Game(IDataSource dataSource, IEconomy enconomy, IMilitaryFactory militaryFactory)
 		{
 			_dataSource = dataSource;
 			_militaryFactory = militaryFactory;
 
-			_civilization = new Civilization(_militaryFactory.BuildInitialMilitary());
+			_civilization = new Civilization(enconomy, _militaryFactory.BuildInitialMilitary());
 			_enemyTown = GetNewEnemyTown(1);
 		}
 
@@ -95,7 +95,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public void PurchaseLoot(Loot loot)
 		{
-			_civilization.Economy.Gold -= loot.GoldValue;
+			_civilization.Economy.SpendGold(loot.GoldValue);
 			_civilization.ItemChest.Inventory.Add(loot);
 		}
 		#endregion
@@ -184,7 +184,7 @@ namespace ProjectLevel.Services.v1.Implementations
 		#region Battle
 		public void RewardPlayerItemFromEnemyTown()
 		{
-			_civilization.Economy.Gold += _enemyTown.GoldValue;
+			_civilization.Economy.AddGold(_enemyTown.GoldValue);
 			AddLoot(new List<Loot> { _enemyTown.Loot });
 		}
 		#endregion

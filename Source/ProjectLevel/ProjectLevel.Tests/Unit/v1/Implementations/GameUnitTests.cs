@@ -16,6 +16,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 	[TestFixture]
 	public class GameUnitTests
 	{
+		private IEconomy _economy;
 		private IMilitaryFactory _militaryFactory;
 		private IGame _sut;
 
@@ -25,7 +26,8 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// TestDataSource has some special items to speed up loot timer
 			IDataSource dataSource = new TestDataSource();
 			_militaryFactory = new MilitaryFactory();
-			_sut = new Game(dataSource, _militaryFactory);
+			_economy = new Economy();
+			_sut = new Game(dataSource, _economy, _militaryFactory);
 
 			_sut.AddLoot(dataSource.GetAvailableLoot());
 		}
@@ -44,7 +46,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource, _militaryFactory);
+			_sut = new Game(dataSource, _economy, _militaryFactory);
 
 			// Act
 			for (int _ = 0; _ < addLootCount; _++)
@@ -66,7 +68,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource, _militaryFactory);
+			_sut = new Game(dataSource, _economy, _militaryFactory);
 
 			// Act
 			for (int _ = 0; _ < addLootCount; _++)
@@ -86,7 +88,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			// Arrange
 			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource, _militaryFactory);
+			_sut = new Game(dataSource, _economy, _militaryFactory);
 
 			for (int _ = 0; _ < addLootCount; _++)
 			{

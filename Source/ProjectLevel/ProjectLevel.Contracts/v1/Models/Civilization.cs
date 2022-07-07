@@ -11,12 +11,13 @@ namespace ProjectLevel.Contracts.v1.Models
 {
 	public class Civilization //: ICivilization
 	{
-		public Economy Economy { get; set; } = new Economy();
+		public IEconomy Economy { get; set; }
 		public IMilitary Military { get; private set; }
 		public ItemChest ItemChest { get; set; } = new ItemChest();
 
-		public Civilization(IMilitary military)
+		public Civilization(IEconomy economy, IMilitary military)
 		{
+			Economy = economy;
 			Military = military;
 		}
 

@@ -1,16 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ProjectLevel.Contracts.v1.Models;
 
 namespace ProjectLevel.Contracts.v1.Interfaces
 {
 	public interface IEconomy
 	{
-		//int GetGold();
-		//int GetGoldIncomeRate();
-		//void UpgradeGoldLevel();
-		//void 
+		int Gold { get; }
+		ActionBar GoldActionBar { get; }
+		int GoldLevel { get;  }
+
+		bool CanUpgradeGoldLevel();
+		void RecieveGoldIncome(ItemChest itemChest);
+		int RequiredGoldToLevelUp();
+		void AddGold(int gold);
+		void SpendGold(int gold);
+		void UpgradeGoldLevel();
+		void TriggerAllActionBars(ItemChest itemChest);
 	}
 }

@@ -16,7 +16,7 @@ namespace ProjectLevel.Services.v1.Implementations
 		private readonly IMilitaryFactory _militaryFactory;
 		private readonly IItemChest _itemChest;
 		private readonly Civilization _civilization;
-		private EnemyTown _enemyTown;
+		private IBattleReady _enemyTown;
 
 		public Game(IDataSource dataSource, IEconomy enconomy, IMilitaryFactory militaryFactory)
 		{
@@ -149,27 +149,25 @@ namespace ProjectLevel.Services.v1.Implementations
 		#endregion
 
 		#region Enemy
-		public EnemyTown GetCurrentEnemyTown()
+		public IBattleReady GetCurrentEnemyTown()
 		{
 			return _enemyTown;
 		}
 
-		public EnemyTown GetNewEnemyTown(int level)
+		public IBattleReady GetNewEnemyTown(int level)
 		{
-			EnemyTown enemy = new("Test Town", level, GetAvailableLoot().First(), _militaryFactory.BuildMilitary(level));
+			BattleReadyEnemyTown enemy = new("Test Town", level, GetAvailableLoot().First(), _militaryFactory.BuildMilitary(level));
 			return enemy;
 		}
 
-		public void SetCurrentEnemyTown(EnemyTown enemyTown)
+		public void SetCurrentEnemyTown(IBattleReady enemyTown)
 		{
 			_enemyTown = enemyTown;
 		}
 
 		public int CalculateDamageToEnemyTown(int attackDamage, MilitaryType militaryType)
 		{
-			int defense = _enemyTown.Military.GetUnitDamage(militaryType);
-			int output = (attackDamage - defense > 0)?(attackDamage - defense):0;
-			return output;
+			return _enemyTown.CalculateDamage(attackDamage, militaryType);
 		}
 
 		public void ApplyDamageToEnemyTown(int attackDamage)

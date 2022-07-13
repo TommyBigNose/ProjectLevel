@@ -47,9 +47,9 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 		#endregion
 
 		#region Enemy
-		EnemyTown GetCurrentEnemyTown();
-		EnemyTown GetNewEnemyTown(int level);
-		void SetCurrentEnemyTown(EnemyTown enemyTown);
+		IBattleReady GetCurrentEnemyTown();
+		IBattleReady GetNewEnemyTown(int level);
+		void SetCurrentEnemyTown(IBattleReady enemyTown);
 		int CalculateDamageToEnemyTown(int attackDamage, MilitaryType militaryType);
 		void ApplyDamageToEnemyTown(int attackDamage);
 		bool IsEnemyTownDestroyed();

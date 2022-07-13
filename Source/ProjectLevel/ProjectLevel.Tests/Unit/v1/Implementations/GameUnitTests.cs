@@ -547,7 +547,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Enemy_SetCurrentEnemyTown(int enemyLevel)
 		{
 			// Arrange
-			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			IBattleReady enemy = _sut.GetNewEnemyTown(enemyLevel);
 
 			// Act
 			_sut.SetCurrentEnemyTown(enemy);
@@ -568,7 +568,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Enenmy_CalculateDamageToEnemyTown(int enemyLevel, int attackDamage, int expected, MilitaryType militaryType)
 		{
 			// Arrange
-			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			IBattleReady enemy = _sut.GetNewEnemyTown(enemyLevel);
 			_sut.SetCurrentEnemyTown(enemy);
 
 			// Act
@@ -585,7 +585,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Enemy_ApplyDamageToEnemyTown(int enemyLevel, int attackDamage, MilitaryType militaryType)
 		{
 			// Arrange
-			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			IBattleReady enemy = _sut.GetNewEnemyTown(enemyLevel);
 			_sut.SetCurrentEnemyTown(enemy);
 			var damage = _sut.CalculateDamageToEnemyTown(attackDamage, militaryType);
 
@@ -606,7 +606,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Enemy_IsEnemyTownDestroyed(int enemyLevel, int attackDamage, MilitaryType militaryType)
 		{
 			// Arrange
-			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			IBattleReady enemy = _sut.GetNewEnemyTown(enemyLevel);
 			_sut.SetCurrentEnemyTown(enemy);
 			var damage = _sut.CalculateDamageToEnemyTown(attackDamage, militaryType);
 
@@ -627,7 +627,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Battle_RewardPlayerItemFromEnemyTown(int enemyLevel)
 		{
 			// Arrange
-			EnemyTown enemy = _sut.GetNewEnemyTown(enemyLevel);
+			IBattleReady enemy = _sut.GetNewEnemyTown(enemyLevel);
 			_sut.SetCurrentEnemyTown(enemy);
 			int currentLoot = _sut.GetLoot().Count;
 

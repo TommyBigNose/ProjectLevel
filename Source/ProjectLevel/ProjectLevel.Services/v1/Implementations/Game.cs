@@ -15,16 +15,16 @@ namespace ProjectLevel.Services.v1.Implementations
 		private readonly IDataSource _dataSource;
 		private readonly IMilitaryFactory _militaryFactory;
 		private readonly IItemChest _itemChest;
-		private readonly Civilization _civilization;
+		private readonly ICivilization _civilization;
 		private IBattleReady _enemyTown;
 
-		public Game(IDataSource dataSource, IEconomy enconomy, IMilitaryFactory militaryFactory)
+		public Game(IDataSource dataSource, ICivilization civilization, IMilitaryFactory militaryFactory)
 		{
 			_dataSource = dataSource;
 			_militaryFactory = militaryFactory;
-
 			_itemChest = new ItemChest();
-			_civilization = new Civilization(enconomy, _militaryFactory.BuildInitialMilitary(), _itemChest);
+			_civilization = civilization;
+			//_civilization = new Civilization(enconomy, _militaryFactory.BuildInitialMilitary(), _itemChest);
 			_enemyTown = GetNewEnemyTown(1);
 		}
 

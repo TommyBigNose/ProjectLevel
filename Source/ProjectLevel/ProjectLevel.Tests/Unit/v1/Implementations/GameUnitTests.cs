@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
@@ -16,43 +17,40 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 	[TestFixture]
 	public class GameUnitTests
 	{
-		private IEconomy _economy;
-		private IMilitaryFactory _militaryFactory;
+		private Mock<IDataSource> _mockDataSource;
+		private Mock<IMilitaryFactory> _mockMilitaryFactory;
+		private Mock<ICivilization> _mockCivilization;
+
 		private IGame _sut;
 
 		[SetUp]
 		public void SetUp()
 		{
 			// TestDataSource has some special items to speed up loot timer
-			IDataSource dataSource = new TestDataSource();
-			_militaryFactory = new MilitaryFactory();
-			_economy = new Economy();
-			_sut = new Game(dataSource, _economy, _militaryFactory);
+			_mockDataSource = MockDataSource.GetMockDataSource();
+			_mockMilitaryFactory = MockMilitaryFactory.GetMockMilitaryFactory(1);
+			_mockCivilization = MockCivilization.GetMockCivilization();
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
-			_sut.AddLoot(dataSource.GetAvailableLoot());
+			//_sut.AddLoot(_mockDataSource.Object.GetAvailableLoot());
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-			
+			_mockMilitaryFactory = null;
+			_mockCivilization = null;
+			_sut = null;
 		}
 
 		#region Data
-		[TestCase(0, 4)]
-		[TestCase(1, 4)]
-		[TestCase(2, 4)]
-		public void Data_GetAvailableLoot(int addLootCount, int expected)
+		[Test]
+		public void Data_GetAvailableLoot()
 		{
 			// Arrange
-			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource, _economy, _militaryFactory);
+			int expected = _mockDataSource.Object.GetAvailableLoot().Count;
 
 			// Act
-			for (int _ = 0; _ < addLootCount; _++)
-			{
-				_sut.AddLoot(_sut.GetAvailableLoot());
-			}
 			var result = _sut.GetAvailableLoot().Count;
 
 			// Assert
@@ -61,52 +59,41 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#endregion
 
 		#region Civilization
-		[TestCase(0, 0)]
-		[TestCase(1, 4)]
-		[TestCase(2, 8)]
-		public void Civilization_AddLoot(int addLootCount, int expected)
+		[Test]
+		public void Civilization_AddLoot()
 		{
 			// Arrange
-			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource, _economy, _militaryFactory);
+			var initial = _sut.GetLoot().Count;
 
 			// Act
-			for (int _ = 0; _ < addLootCount; _++)
-			{
-				_sut.AddLoot(_sut.GetAvailableLoot());
-			}
+			_sut.AddLoot(_sut.GetAvailableLoot());
 			var result = _sut.GetLoot().Count;
+
+			// Assert
+			Assert.That(result, Is.GreaterThan(initial));
+		}
+
+		[Test]
+		public void Civilization_GetLoot()
+		{
+			// Arrange
+			var expected = _mockDataSource.Object.GetAvailableLoot();
+
+			// Act
+			_sut.AddLoot(_mockDataSource.Object.GetAvailableLoot());
+			var result = _sut.GetLoot();
 
 			// Assert
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 0)]
-		[TestCase(1, 4)]
-		[TestCase(2, 8)]
-		public void Civilization_GetLoot(int addLootCount, int expected)
+		[Test]
+		public void Civilization_RemoveAllLoot()
 		{
 			// Arrange
-			IDataSource dataSource = new TestDataSource();
-			_sut = new Game(dataSource, _economy, _militaryFactory);
+			int expected = 0;
+			_sut.AddLoot(_mockDataSource.Object.GetAvailableLoot());
 
-			for (int _ = 0; _ < addLootCount; _++)
-			{
-				_sut.AddLoot(dataSource.GetAvailableLoot());
-			}
-
-			// Act
-
-			var result = _sut.GetLoot().Count;
-
-			// Assert
-			Assert.AreEqual(expected, result);
-		}
-
-		[TestCase(0)]
-		public void Civilization_RemoveAllLoot(int expected)
-		{
-			// Arrange
 			// Act
 			_sut.RemoveAllLoot();
 			var result = _sut.GetLoot().Count;

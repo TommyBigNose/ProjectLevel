@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
-using ProjectLevel.Contracts.v1.Models;
 using ProjectLevel.Services.v1.Implementations;
 using ProjectLevel.Tests.TestHelpers;
 using static ProjectLevel.Contracts.v1.Constants;

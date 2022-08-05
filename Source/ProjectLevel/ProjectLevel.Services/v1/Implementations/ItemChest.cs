@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProjectLevel.Contracts.v1.Interfaces;
+using ProjectLevel.Contracts.v1.Models;
 using static ProjectLevel.Contracts.v1.Constants;
 
-namespace ProjectLevel.Contracts.v1.Models
+namespace ProjectLevel.Services.v1.Implementations
 {
 	public class ItemChest : IItemChest
 	{

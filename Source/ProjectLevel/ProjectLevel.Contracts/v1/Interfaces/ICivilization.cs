@@ -9,17 +9,9 @@ namespace ProjectLevel.Contracts.v1.Interfaces
 {
 	public interface ICivilization
 	{
-		#region Economy
-		//int GetGold();
-		//int GetGoldIncomeRate();
-		void UpgradeGoldLevel();
-		#endregion
-
-		#region Military
-		//int GetUnitCount(MilitaryType militaryType);
-		//int GetUnitDamage(MilitaryType militaryType);
-		//ActionBar GetUnitActionBar(MilitaryType militaryType);
-		void UpgradeUnitLevel(MilitaryType militaryType);
-		#endregion
+		IEconomy Economy { get; }
+		IMilitary Military { get; }
+		IItemChest ItemChest { get; }
+		void TriggerAllActionBars();
 	}
 }

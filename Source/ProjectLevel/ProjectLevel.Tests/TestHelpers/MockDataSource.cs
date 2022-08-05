@@ -1,0 +1,105 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Moq;
+using ProjectLevel.Contracts.v1.Interfaces;
+using ProjectLevel.Contracts.v1.Models;
+using static ProjectLevel.Contracts.v1.Constants;
+
+namespace ProjectLevel.Tests.TestHelpers
+{
+	public static class MockDataSource
+	{
+		public static Mock<IDataSource> GetMockDataSource()
+		{
+			var mock = new Mock<IDataSource>();
+
+			mock.Setup(_ => _.GetAvailableLoot())
+				.Returns(GetTestingLoot());
+
+			return mock;
+		}
+
+		public static List<Loot> GetTestingLoot()
+		{
+			List<Loot> result = new()
+			{
+				new Loot()
+				{
+					Name = "Speed Up Gold Income",
+					ImageResourceString = "Default.png",
+					Level = 1,
+					GoldValue = 5,
+					GoldIncome = 0,
+					GoldSpeedRatio = 100.0f,
+					IsShopItem = false,
+					MilitaryLootStats = new List<MilitaryLootStat>()
+				},
+				new Loot()
+				{
+					Name = "Melee - Speed up",
+					ImageResourceString = "Default.png",
+					Level = 1,
+					GoldValue = 5,
+					GoldIncome = 0,
+					GoldSpeedRatio = 0.0f,
+					IsShopItem = true,
+					MilitaryLootStats = new List<MilitaryLootStat>
+					{
+						new MilitaryLootStat()
+						{
+							MilitaryType = MilitaryType.Melee,
+							DamageRatio = 0.2f,
+							SpeedRatio = 100.0f,
+							RecruitRatio = 0.0f
+						}
+					}
+				},
+				new Loot()
+				{
+					Name = "Ranged - Speed up",
+					ImageResourceString = "Default.png",
+					Level = 1,
+					GoldValue = 5,
+					GoldIncome = 0,
+					GoldSpeedRatio = 0.0f,
+					IsShopItem = true,
+					MilitaryLootStats = new List<MilitaryLootStat>
+					{
+						new MilitaryLootStat()
+						{
+							MilitaryType = MilitaryType.Ranged,
+							DamageRatio = 0.2f,
+							SpeedRatio = 100.0f,
+							RecruitRatio = 0.0f
+						}
+					}
+				},
+				new Loot()
+				{
+					Name = "Siege - Speed up",
+					ImageResourceString = "Default.png",
+					Level = 1,
+					GoldValue = 5,
+					GoldIncome = 0,
+					GoldSpeedRatio = 0.0f,
+					IsShopItem = true,
+					MilitaryLootStats = new List<MilitaryLootStat>
+					{
+						new MilitaryLootStat()
+						{
+							MilitaryType = MilitaryType.Siege,
+							DamageRatio = 0.2f,
+							SpeedRatio = 100.0f,
+							RecruitRatio = 0.0f
+						}
+					}
+				}
+			};
+
+			return result;
+		}
+	}
+}

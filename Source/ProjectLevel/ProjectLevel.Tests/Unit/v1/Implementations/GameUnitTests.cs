@@ -104,14 +104,21 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#endregion
 
 		#region Gold
-		[TestCase(0, 0)]
-		[TestCase(10, 1)]
-		[TestCase(20, 2)]
-		public void Gold_GetGold(int gameTicks, int expected)
+		[Test]
+		public void Gold_GetGold()
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
+			int expected = 100;
 
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+			economy.AddGold(expected);
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+			
 			// Act
 			var result = _sut.GetGold();
 

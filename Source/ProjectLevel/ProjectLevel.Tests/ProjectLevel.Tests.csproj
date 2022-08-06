@@ -14,7 +14,6 @@
 
   <ItemGroup>
     <Folder Include="Functional\v1\Implementations\" />
-    <Folder Include="Shared\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -126,15 +126,20 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 1, false)]
-		[TestCase(10, 1, false)]
-		[TestCase(20, 1, false)]
-		[TestCase(100, 2, true)]
-		public void Gold_GetGoldIncomeRate(int gameTicks, int expected, bool upgrade)
+		[Test]
+		public void Gold_GetGoldIncomeRate()
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if(upgrade) _sut.UpgradeGoldLevel();
+			int expected = 2;
+
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+			economy.UpgradeGoldLevel();
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.GetGoldIncomeRate();
@@ -143,15 +148,20 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 10, false)]
-		[TestCase(10, 10, false)]
-		[TestCase(20, 10, false)]
-		[TestCase(100, 20, true)]
-		public void Gold_RequiredGoldToLevelUp(int gameTicks, int expected, bool upgrade)
+		[Test]
+		public void Gold_RequiredGoldToLevelUp()
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if (upgrade) _sut.UpgradeGoldLevel();
+			int expected = 20;
+
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+			economy.UpgradeGoldLevel();
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.RequiredGoldToLevelUp();
@@ -160,16 +170,20 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, false, false)]
-		[TestCase(10, false, false)]
-		[TestCase(20, false, false)]
-		[TestCase(100, true, false)]
-		[TestCase(100, false, true)]
-		public void Gold_CanUpgradeGoldLevel(int gameTicks, bool expected, bool upgrade)
+		[Test]
+		public void Gold_CanUpgradeGoldLevel()
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if (upgrade) _sut.UpgradeGoldLevel();
+			bool expected = true;
+
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+			economy.AddGold(100);
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.CanUpgradeGoldLevel();
@@ -178,35 +192,42 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 1)]
-		[TestCase(1, 2)]
-		[TestCase(2, 3)]
-		[TestCase(100, 101)]
-		public void Gold_UpgradeGoldLevel(int upgradeCount, int expected)
+		[Test]
+		public void Gold_UpgradeGoldLevel()
 		{
 			// Arrange
+			int expected = 2;
+
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+
 			// Act
-			for (int _ = 0; _ < upgradeCount; _++)
-			{
-				_sut.UpgradeGoldLevel();
-			}
+			_sut.UpgradeGoldLevel();
 			var result = _sut.GetGoldIncomeRate();
 
 			// Assert
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 0.0f, false)]
-		[TestCase(5, 505.0f, false)]
-		[TestCase(10, 0.0f, false)]
-		[TestCase(11, 101.0f, false)]
-		[TestCase(20, 0.0f, false)]
-		[TestCase(100, 0.0f, false)]
-		public void Gold_GetGoldActionBarValue(int gameTicks, float expected, bool upgrade)
+		[Test]
+		public void Gold_GetGoldActionBarValue()
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if (upgrade) _sut.UpgradeGoldLevel();
+			float expected = 1.0f;
+
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+			economy.TriggerAllActionBars(new ItemChest());
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.GetGoldActionBarValue();
@@ -217,41 +238,36 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#endregion
 
 		#region Shop
-		[TestCase(1, 3)]
-		[TestCase(2, 6)]
-		public void Shop_GetShopLoot(int getLootCount, int expected)
+		[Test]
+		public void Shop_GetShopLoot()
 		{
 			// Arrange
-			List<Loot> loot = new();
+			var expected = _mockDataSource.Object.GetAvailableLoot().FindAll(_=>_.IsShopItem);
 
 			// Act
-			for (int i = 0; i < getLootCount; i++)
-			{
-				loot.AddRange(_sut.GetShopLoot());
-			}
-			
-			int result = loot.Count;
+			var result = _sut.GetShopLoot();
 
 			// Assert
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, false, false)]
-		[TestCase(5, false, false)]
-		[TestCase(10, false, false)]
-		[TestCase(50, true, false)]
-		[TestCase(55, false, true)]
-		[TestCase(100, true, true)]
-		public void Shop_CanPurchaseLoot(int gameTicks, bool expected, bool purchaseLoot)
+		[Test]
+		public void Shop_CanPurchaseLoot()
 		{
 			// Arrange
+			bool expected = true;
+
+			_mockCivilization = new Mock<ICivilization>();
+			IEconomy economy = new Economy();
+			economy.AddGold(10000);
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+
 			List<Loot> loot = _sut.GetShopLoot();
-			TriggerGameActionBars(gameTicks);
-			if(purchaseLoot)
-			{
-				_sut.PurchaseLoot(loot.First());
-			}
-			
+
 			// Act
 			bool result = _sut.CanPurchaseLoot(loot.First());
 
@@ -259,28 +275,34 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 0, false)]
-		[TestCase(5, 0, false)]
-		[TestCase(10, 0, false)]
-		[TestCase(50, 1, true)]
-		[TestCase(55, 0, false)]
-		[TestCase(100, 2, true)]
-		public void Shop_PurchaseLoot(int gameTicks, int expected, bool purchaseAllLootPossible)
+		[Test]
+		public void Shop_PurchaseLoot()
 		{
 			// Arrange
+			_mockCivilization = new Mock<ICivilization>();
+			
+			IEconomy economy = new Economy();
+			economy.AddGold(10000);
+
+			_mockCivilization.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			IItemChest itemChest = new ItemChest();
+			_mockCivilization.Setup(_ => _.ItemChest)
+				.Returns(itemChest);
+
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+
 			List<Loot> loot = _sut.GetShopLoot();
-			TriggerGameActionBars(gameTicks);
+
 			int initialLootCount = _sut.GetLoot().Count;
 
 			// Act
-			while (purchaseAllLootPossible && _sut.CanPurchaseLoot(loot.First()))
-			{
-				_sut.PurchaseLoot(loot.First());
-			}
+			_sut.PurchaseLoot(loot.First());
 			int result = _sut.GetLoot().Count;
 
 			// Assert
-			Assert.AreEqual(expected + initialLootCount, result);
+			Assert.That(result, Is.GreaterThan(initialLootCount));
 		}
 		#endregion
 

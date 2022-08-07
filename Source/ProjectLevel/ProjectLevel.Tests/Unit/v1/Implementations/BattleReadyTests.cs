@@ -3,28 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using ProjectLevel.Contracts.v1.Interfaces;
 using ProjectLevel.Services.v1.Implementations;
+using ProjectLevel.Tests.TestHelpers;
 using static ProjectLevel.Contracts.v1.Constants;
 
 namespace ProjectLevel.Tests.Unit.v1.Implementations
 {
 	public class BattleReadyTests
 	{
-		private IMilitaryFactory _militaryFactory;
+		private Mock<IMilitaryFactory> _mockMilitaryFactory;
 		private IBattleReady _sut;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_militaryFactory = new MilitaryFactory();
-			_sut = new BattleReadyEnemyTown("Test Enemy Town", 1, new Contracts.v1.Models.Loot(), _militaryFactory.BuildInitialMilitary());
+			_mockMilitaryFactory = MockMilitaryFactory.GetMockMilitaryFactory(1);
+			_sut = new BattleReadyEnemyTown("Test Enemy Town", 1, new Contracts.v1.Models.Loot(), _mockMilitaryFactory.Object.BuildInitialMilitary());
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
+			_mockMilitaryFactory = null;
 			_sut = null;
 		}
 
@@ -35,7 +38,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void CalculateDamage(int enemyLevel, int attackDamage, int expected, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = new BattleReadyEnemyTown("Test Enemy Town", enemyLevel, new Contracts.v1.Models.Loot(), _militaryFactory.BuildMilitary(enemyLevel));
+			_sut = new BattleReadyEnemyTown("Test Enemy Town", enemyLevel, new Contracts.v1.Models.Loot(), _mockMilitaryFactory.Object.BuildMilitary(enemyLevel));
 
 			// Act
 			var result = _sut.CalculateDamage(attackDamage, militaryType);
@@ -51,7 +54,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void ApplyDamage(int enemyLevel, int attackDamage, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = new BattleReadyEnemyTown("Test Enemy Town", enemyLevel, new Contracts.v1.Models.Loot(), _militaryFactory.BuildMilitary(enemyLevel));
+			_sut = new BattleReadyEnemyTown("Test Enemy Town", enemyLevel, new Contracts.v1.Models.Loot(), _mockMilitaryFactory.Object.BuildMilitary(enemyLevel));
 			var damage = _sut.CalculateDamage(attackDamage, militaryType);
 
 			// Act
@@ -70,7 +73,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void IsTownDestroyed(int enemyLevel, int attackDamage, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = new BattleReadyEnemyTown("Test Enemy Town", enemyLevel, new Contracts.v1.Models.Loot(), _militaryFactory.BuildMilitary(enemyLevel));
+			_sut = new BattleReadyEnemyTown("Test Enemy Town", enemyLevel, new Contracts.v1.Models.Loot(), _mockMilitaryFactory.Object.BuildMilitary(enemyLevel));
 			var damage = _sut.CalculateDamage(attackDamage, militaryType);
 
 			// Act

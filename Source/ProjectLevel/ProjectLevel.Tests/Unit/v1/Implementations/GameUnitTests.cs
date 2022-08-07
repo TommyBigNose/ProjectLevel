@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -38,6 +39,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TearDown]
 		public void TearDown()
 		{
+			_mockDataSource = null;
 			_mockMilitaryFactory = null;
 			_mockCivilization = null;
 			_sut = null;
@@ -110,12 +112,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// Arrange
 			int expected = 100;
 
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-			economy.AddGold(expected);
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
+			_mockCivilization = MockCivilization.GetMockCivilization(expected, 1);
 
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 			
@@ -130,14 +127,9 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Gold_GetGoldIncomeRate()
 		{
 			// Arrange
-			int expected = 2;
+			int expected = 1;
 
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-			economy.UpgradeGoldLevel();
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
 
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
@@ -152,14 +144,9 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Gold_RequiredGoldToLevelUp()
 		{
 			// Arrange
-			int expected = 20;
+			int expected = 10;
 
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-			economy.UpgradeGoldLevel();
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
 
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
@@ -176,12 +163,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// Arrange
 			bool expected = true;
 
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-			economy.AddGold(100);
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1, expected);
 
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
@@ -196,36 +178,25 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Gold_UpgradeGoldLevel()
 		{
 			// Arrange
-			int expected = 2;
-
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
-
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+			int initial = _sut.GetGoldIncomeRate();
 
 			// Act
 			_sut.UpgradeGoldLevel();
 			var result = _sut.GetGoldIncomeRate();
 
 			// Assert
-			Assert.AreEqual(expected, result);
+			Assert.That(result, Is.GreaterThan(initial));
 		}
 
 		[Test]
 		public void Gold_GetGoldActionBarValue()
 		{
 			// Arrange
-			float expected = 1.0f;
+			float expected = 0.0f;
 
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-			economy.TriggerAllActionBars(new ItemChest());
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
 
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
@@ -257,13 +228,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			// Arrange
 			bool expected = true;
 
-			_mockCivilization = new Mock<ICivilization>();
-			IEconomy economy = new Economy();
-			economy.AddGold(10000);
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
-
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			List<Loot> loot = _sut.GetShopLoot();
@@ -279,18 +244,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void Shop_PurchaseLoot()
 		{
 			// Arrange
-			_mockCivilization = new Mock<ICivilization>();
-			
-			IEconomy economy = new Economy();
-			economy.AddGold(10000);
-
-			_mockCivilization.Setup(_ => _.Economy)
-				.Returns(economy);
-
-			IItemChest itemChest = new ItemChest();
-			_mockCivilization.Setup(_ => _.ItemChest)
-				.Returns(itemChest);
-
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
 			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			List<Loot> loot = _sut.GetShopLoot();
@@ -307,22 +261,14 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		#endregion
 
 		#region Military
-		[TestCase(0, 1, MilitaryType.Melee)]
-		[TestCase(10, 1, MilitaryType.Melee)]
-		[TestCase(20, 1, MilitaryType.Melee)]
-		[TestCase(100, 1, MilitaryType.Melee)]
-		[TestCase(0, 1, MilitaryType.Ranged)]
-		[TestCase(10, 1, MilitaryType.Ranged)]
-		[TestCase(20, 1, MilitaryType.Ranged)]
-		[TestCase(100, 1, MilitaryType.Ranged)]
-		[TestCase(0, 1, MilitaryType.Siege)]
-		[TestCase(10, 1, MilitaryType.Siege)]
-		[TestCase(20, 1, MilitaryType.Siege)]
-		[TestCase(100, 1, MilitaryType.Siege)]
-		public void Military_GetMilitaryUnitCount(int gameTicks, int expected, MilitaryType militaryType)
+		[TestCase(1, MilitaryType.Melee)]
+		[TestCase(1, MilitaryType.Ranged)]
+		[TestCase(1, MilitaryType.Siege)]
+		public void Military_GetMilitaryUnitCount(int expected, MilitaryType militaryType)
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.GetMilitaryUnitCount(militaryType);
@@ -331,23 +277,14 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 1, false, MilitaryType.Melee)]
-		[TestCase(10, 1, false, MilitaryType.Melee)]
-		[TestCase(20, 1, false, MilitaryType.Melee)]
-		[TestCase(100, 2, true, MilitaryType.Melee)]
-		[TestCase(0, 1, false, MilitaryType.Ranged)]
-		[TestCase(10, 1, false, MilitaryType.Ranged)]
-		[TestCase(20, 1, false, MilitaryType.Ranged)]
-		[TestCase(100, 2, true, MilitaryType.Ranged)]
-		[TestCase(0, 1, false, MilitaryType.Siege)]
-		[TestCase(10, 1, false, MilitaryType.Siege)]
-		[TestCase(20, 1, false, MilitaryType.Siege)]
-		[TestCase(100, 2, true, MilitaryType.Siege)]
-		public void Military_GetMilitaryLevel(int gameTicks, int expected, bool upgrade, MilitaryType militaryType)
+		[TestCase(1, MilitaryType.Melee)]
+		[TestCase(1, MilitaryType.Ranged)]
+		[TestCase(1, MilitaryType.Siege)]
+		public void Military_GetMilitaryLevel(int expected, MilitaryType militaryType)
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if (upgrade) _sut.UpgradeMilitaryLevel(militaryType);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.GetMilitaryLevel(militaryType);
@@ -356,31 +293,17 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, 1, false, false, false, MilitaryType.Melee)]
-		[TestCase(10, 1, false, false, false, MilitaryType.Melee)]
-		[TestCase(100, 2, true, false, false, MilitaryType.Melee)]
-		[TestCase(100, 4, true, true, false, MilitaryType.Melee)]
-		[TestCase(100, 5, true, true, true, MilitaryType.Melee)]
-		[TestCase(0, 1, false, false, false, MilitaryType.Ranged)]
-		[TestCase(10, 1, false, false, false, MilitaryType.Ranged)]
-		[TestCase(20, 1, false, false, false, MilitaryType.Ranged)]
-		[TestCase(100, 2, true, false, false, MilitaryType.Ranged)]
-		[TestCase(100, 4, true, true, false, MilitaryType.Ranged)]
-		[TestCase(100, 5, true, true, true, MilitaryType.Ranged)]
-		[TestCase(0, 1, false, false, false, MilitaryType.Siege)]
-		[TestCase(10, 1, false, false, false, MilitaryType.Siege)]
-		[TestCase(20, 1, false, false, false, MilitaryType.Siege)]
-		[TestCase(100, 2, true, false, false, MilitaryType.Siege)]
-		[TestCase(100, 4, true, true, false, MilitaryType.Siege)]
-		[TestCase(100, 5, true, true, true, MilitaryType.Siege)]
-		public void Military_GetMilitaryDamage(int gameTicks, int expected, bool upgradeLevel, bool addUnit, bool hasLoot, MilitaryType militaryType)
+		[TestCase(1, 1, MilitaryType.Melee)]
+		[TestCase(2, 4, MilitaryType.Melee)]
+		[TestCase(1, 1, MilitaryType.Ranged)]
+		[TestCase(2, 4, MilitaryType.Ranged)]
+		[TestCase(1, 1, MilitaryType.Siege)]
+		[TestCase(2, 4, MilitaryType.Siege)]
+		public void Military_GetMilitaryDamage(int level, int expected, MilitaryType militaryType)
 		{
 			// Arrange
-			if (!hasLoot) _sut.RemoveAllLoot();
-			
-			TriggerGameActionBars(gameTicks);
-			if (upgradeLevel) _sut.UpgradeMilitaryLevel(militaryType);
-			if (addUnit) _sut.UpgradeMilitaryUnitCount(militaryType);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, level);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.GetMilitaryDamage(militaryType);
@@ -389,22 +312,15 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, false, MilitaryType.Melee)]
-		[TestCase(10, false, MilitaryType.Melee)]
-		[TestCase(20, false, MilitaryType.Melee)]
-		[TestCase(100, true, MilitaryType.Melee)]
-		[TestCase(0, false, MilitaryType.Ranged)]
-		[TestCase(10, false, MilitaryType.Ranged)]
-		[TestCase(20, false, MilitaryType.Ranged)]
-		[TestCase(100, true, MilitaryType.Ranged)]
-		[TestCase(0, false, MilitaryType.Siege)]
-		[TestCase(10, false, MilitaryType.Siege)]
-		[TestCase(20, false, MilitaryType.Siege)]
-		[TestCase(100, true, MilitaryType.Siege)]
-		public void Military_CanUpgradeMilitaryLevel(int gameTicks, bool expected, MilitaryType militaryType)
+		[TestCase(true, MilitaryType.Melee)]
+		[TestCase(true, MilitaryType.Ranged)]
+		[TestCase(true, MilitaryType.Siege)]
+		public void Military_CanUpgradeMilitaryLevel(bool expected, MilitaryType militaryType)
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+
 
 			// Act
 			var result = _sut.CanUpgradeMilitaryLevel(militaryType);
@@ -413,50 +329,32 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, false, false, MilitaryType.Melee)]
-		[TestCase(10, false, false, MilitaryType.Melee)]
-		[TestCase(20, false, false, MilitaryType.Melee)]
-		[TestCase(100, true, false, MilitaryType.Melee)]
-		[TestCase(100, false, true, MilitaryType.Melee)]
-		[TestCase(0, false, false, MilitaryType.Ranged)]
-		[TestCase(10, false, false, MilitaryType.Ranged)]
-		[TestCase(20, false, false, MilitaryType.Ranged)]
-		[TestCase(100, true, false, MilitaryType.Ranged)]
-		[TestCase(100, false, true, MilitaryType.Ranged)]
-		[TestCase(0, false, false, MilitaryType.Siege)]
-		[TestCase(10, false, false, MilitaryType.Siege)]
-		[TestCase(20, false, false, MilitaryType.Siege)]
-		[TestCase(100, true, false, MilitaryType.Siege)]
-		[TestCase(100, false, true, MilitaryType.Siege)]
-		public void Military_UpgradeMilitaryLevel(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
+		[TestCase(MilitaryType.Melee)]
+		[TestCase(MilitaryType.Ranged)]
+		[TestCase(MilitaryType.Siege)]
+		public void Military_UpgradeMilitaryLevel(MilitaryType militaryType)
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if (upgrade) _sut.UpgradeMilitaryLevel(militaryType);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+			var initial = _sut.GetMilitaryLevel(militaryType);
 
 			// Act
-			var result = _sut.CanUpgradeMilitaryLevel(militaryType);
+			_sut.UpgradeMilitaryLevel(militaryType);
+			var result = _sut.GetMilitaryLevel(militaryType);
 
 			// Assert
-			Assert.AreEqual(expected, result);
+			Assert.That(result, Is.GreaterThan(initial));
 		}
 
-		[TestCase(0, false, MilitaryType.Melee)]
-		[TestCase(10, false, MilitaryType.Melee)]
-		[TestCase(20, false, MilitaryType.Melee)]
-		[TestCase(100, true, MilitaryType.Melee)]
-		[TestCase(0, false, MilitaryType.Ranged)]
-		[TestCase(10, false, MilitaryType.Ranged)]
-		[TestCase(20, false, MilitaryType.Ranged)]
-		[TestCase(100, true, MilitaryType.Ranged)]
-		[TestCase(0, false, MilitaryType.Siege)]
-		[TestCase(10, false, MilitaryType.Siege)]
-		[TestCase(20, false, MilitaryType.Siege)]
-		[TestCase(100, true, MilitaryType.Siege)]
-		public void Military_CanUpgradeMilitaryUnitCount(int gameTicks, bool expected, MilitaryType militaryType)
+		[TestCase(true, MilitaryType.Melee)]
+		[TestCase(true, MilitaryType.Ranged)]
+		[TestCase(true, MilitaryType.Siege)]
+		public void Military_CanUpgradeMilitaryUnitCount(bool expected, MilitaryType militaryType)
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
 
 			// Act
 			var result = _sut.CanUpgradeMilitaryUnitCount(militaryType);
@@ -465,26 +363,15 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(expected, result);
 		}
 
-		[TestCase(0, false, false, MilitaryType.Melee)]
-		[TestCase(10, false, false, MilitaryType.Melee)]
-		[TestCase(20, false, false, MilitaryType.Melee)]
-		[TestCase(100, true, false, MilitaryType.Melee)]
-		[TestCase(100, false, true, MilitaryType.Melee)]
-		[TestCase(0, false, false, MilitaryType.Ranged)]
-		[TestCase(10, false, false, MilitaryType.Ranged)]
-		[TestCase(20, false, false, MilitaryType.Ranged)]
-		[TestCase(100, true, false, MilitaryType.Ranged)]
-		[TestCase(100, false, true, MilitaryType.Ranged)]
-		[TestCase(0, false, false, MilitaryType.Siege)]
-		[TestCase(10, false, false, MilitaryType.Siege)]
-		[TestCase(20, false, false, MilitaryType.Siege)]
-		[TestCase(100, true, false, MilitaryType.Siege)]
-		[TestCase(100, false, true, MilitaryType.Siege)]
-		public void Military_UpgradeMilitaryUnitCount(int gameTicks, bool expected, bool upgrade, MilitaryType militaryType)
+		[TestCase(false, false, MilitaryType.Melee)]
+		[TestCase(false, false, MilitaryType.Ranged)]
+		[TestCase(false, false, MilitaryType.Siege)]
+		public void Military_UpgradeMilitaryUnitCount(bool expected, bool upgrade, MilitaryType militaryType)
 		{
 			// Arrange
-			TriggerGameActionBars(gameTicks);
-			if (upgrade) _sut.UpgradeMilitaryUnitCount(militaryType);
+			_mockCivilization = MockCivilization.GetMockCivilization(10000, 1);
+			_sut = new Game(_mockDataSource.Object, _mockCivilization.Object, _mockMilitaryFactory.Object);
+			//int initial = _sut.GetMilitaryUnitCount();
 
 			// Act
 			var result = _sut.CanUpgradeMilitaryUnitCount(militaryType);

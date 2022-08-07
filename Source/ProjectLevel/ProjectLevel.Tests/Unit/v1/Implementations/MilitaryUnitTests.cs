@@ -4,9 +4,11 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
+using ProjectLevel.Contracts.v1.Models;
 using ProjectLevel.Services.v1.Implementations;
 using ProjectLevel.Tests.TestHelpers;
 using static ProjectLevel.Contracts.v1.Constants;
@@ -15,24 +17,47 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 {
 	public class MilitaryUnitTests
 	{
-		private IDataSource _dataSource;
-		private IMilitaryFactory _militaryFactory;
-		private ItemChest _itemChest;
+		private Mock<IDataSource> _mockDataSource;
+		private Mock<IMilitaryFactory> _mockMilitaryFactory;
+		private Mock<IItemChest> _mockItemChest;
 		private IMilitary _sut;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_dataSource = new TestDataSource();
-			_militaryFactory = new MilitaryFactory();
-			_itemChest = new ItemChest(_dataSource.GetAvailableLoot());
-			_sut = _militaryFactory.BuildInitialMilitary();
+			_mockDataSource = MockDataSource.GetMockDataSource();
+			_mockMilitaryFactory = MockMilitaryFactory.GetMockMilitaryFactory(1);
+			_mockItemChest = MockItemChest.GetMockItemChest();
+
+			_sut = new Military(_mockMilitaryFactory.Object.BuildMilitaryUnits(1));
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
+			_mockDataSource = null;
+			_mockMilitaryFactory = null;
+			_mockItemChest = null;
 
+			_sut = null;
+		}
+
+		[TestCase(1, MilitaryType.Melee)]
+		[TestCase(5, MilitaryType.Melee)]
+		[TestCase(1, MilitaryType.Ranged)]
+		[TestCase(5, MilitaryType.Ranged)]
+		[TestCase(1, MilitaryType.Siege)]
+		[TestCase(5, MilitaryType.Siege)]
+		public void SetupMilitaryUnits(int expected, MilitaryType militaryType)
+		{
+			// Arrange
+			IEnumerable<MilitaryUnit> militaryUnitList = MockMilitaryFactory.GetMilitaryUnits(expected);
+
+			// Act
+			_sut.SetupMilitaryUnits(militaryUnitList);
+
+			// Assert
+			Assert.AreEqual(expected, _sut.GetUnitLevel(militaryType));
 		}
 
 		[TestCase(1, MilitaryType.Melee)]
@@ -47,7 +72,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void GetUnitCount(int level, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = _militaryFactory.BuildMilitary(level);
+			_sut = new Military(MockMilitaryFactory.GetMilitaryUnits(level));
 
 			// Act
 			var result = _sut.GetUnitCount(militaryType);
@@ -65,13 +90,13 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(1, MilitaryType.Siege)]
 		[TestCase(5, MilitaryType.Siege)]
 		[TestCase(10, MilitaryType.Siege)]
-		public void GetUnitDamage(int level, MilitaryType militaryType)
+		public void GetBaseUnitDamage(int level, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = _militaryFactory.BuildMilitary(level);
+			_sut = new Military(MockMilitaryFactory.GetMilitaryUnits(level));
 
 			// Act
-			var result = _sut.GetUnitDamage(militaryType);
+			var result = _sut.GetBaseUnitDamage(militaryType);
 
 			// Assert
 			Assert.AreEqual(_sut.GetUnitCount(militaryType)
@@ -94,10 +119,33 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TestCase(1, MilitaryType.Siege)]
 		[TestCase(5, MilitaryType.Siege)]
 		[TestCase(10, MilitaryType.Siege)]
+		public void GetTotalUnitDamage(int level, MilitaryType militaryType)
+		{
+			// Arrange
+			_sut = new Military(MockMilitaryFactory.GetMilitaryUnits(level));
+			float ratio = 1.0f + _mockItemChest.Object.GetStatsForMilitaryType(militaryType).Sum(_ => _.DamageRatio);
+			double expected = Math.Round(_sut.GetBaseUnitDamage(militaryType) * ratio);
+
+			// Act
+			var result = _sut.GetTotalUnitDamage(militaryType, _mockItemChest.Object);
+
+			// Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[TestCase(1, MilitaryType.Melee)]
+		[TestCase(5, MilitaryType.Melee)]
+		[TestCase(10, MilitaryType.Melee)]
+		[TestCase(1, MilitaryType.Ranged)]
+		[TestCase(5, MilitaryType.Ranged)]
+		[TestCase(10, MilitaryType.Ranged)]
+		[TestCase(1, MilitaryType.Siege)]
+		[TestCase(5, MilitaryType.Siege)]
+		[TestCase(10, MilitaryType.Siege)]
 		public void GetUnitLevel(int level, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = _militaryFactory.BuildMilitary(level);
+			_sut = new Military(MockMilitaryFactory.GetMilitaryUnits(level));
 
 			// Act
 			var result = _sut.GetUnitLevel(militaryType);
@@ -118,7 +166,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void RequiredGoldForNewUnit(int level, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = _militaryFactory.BuildMilitary(level);
+			_sut = new Military(MockMilitaryFactory.GetMilitaryUnits(level));
 
 			// Act
 			var result = _sut.RequiredGoldForNewUnit(militaryType);
@@ -139,7 +187,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void RequiredGoldToLevelUp(int level, MilitaryType militaryType)
 		{
 			// Arrange
-			_sut = _militaryFactory.BuildMilitary(level);
+			_sut = new Military(MockMilitaryFactory.GetMilitaryUnits(level));
 
 			// Act
 			var result = _sut.RequiredGoldToLevelUp(militaryType);
@@ -215,7 +263,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			for (int _ = 0; _ < amount; _++)
 			{
-				if(useLoot)	_sut.TriggerAllActionBars(_itemChest);
+				if(useLoot)	_sut.TriggerAllActionBars(_mockItemChest.Object);
 				else _sut.TriggerAllActionBars(new ItemChest());
 			}
 		}

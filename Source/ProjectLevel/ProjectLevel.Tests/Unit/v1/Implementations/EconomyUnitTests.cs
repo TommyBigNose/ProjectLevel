@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
@@ -14,22 +15,24 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 {
 	public class EconomyUnitTests
 	{
-		private IDataSource _dataSource;
-		private ItemChest _itemChest;
+		private Mock<IDataSource> _mockDataSource;
+		private Mock<IItemChest> _mockItemChest;
 		private IEconomy _sut;
 
 		[SetUp]
 		public void SetUp()
 		{
-			_dataSource = new TestDataSource();
-			_itemChest = new ItemChest(_dataSource.GetAvailableLoot());
+			_mockDataSource = MockDataSource.GetMockDataSource();
+			_mockItemChest = MockItemChest.GetMockItemChest();
 			_sut = new Economy();
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-
+			_mockDataSource = null;
+			_mockItemChest = null;
+			_sut = null;
 		}
 
 		[TestCase(1, 0, false)]
@@ -63,7 +66,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void RecieveGoldIncome(int level, int gold, bool useLoot, int expected)
 		{
 			// Arrange
-			ItemChest itemChest = (useLoot) ? _itemChest : new ItemChest();
+			IItemChest itemChest = (useLoot) ? _mockItemChest.Object : new ItemChest();
 			for (int i = 1; i < level; i++)
 			{
 				_sut.UpgradeGoldLevel();
@@ -149,7 +152,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		{
 			for (int _ = 0; _ < amount; _++)
 			{
-				if (useLoot) _sut.TriggerAllActionBars(_itemChest);
+				if (useLoot) _sut.TriggerAllActionBars(_mockItemChest.Object);
 				else _sut.TriggerAllActionBars(new ItemChest());
 			}
 		}

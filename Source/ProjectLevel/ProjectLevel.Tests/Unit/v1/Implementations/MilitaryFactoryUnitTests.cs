@@ -24,7 +24,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		[TearDown]
 		public void TearDown()
 		{
-
+			_sut = null;
 		}
 
 		[Test]
@@ -41,9 +41,9 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 			Assert.AreEqual(1, result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Ranged));
 			Assert.AreEqual(1, result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Siege));
 
-			Assert.AreEqual(1, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Melee));
-			Assert.AreEqual(1, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Ranged));
-			Assert.AreEqual(1, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Siege));
+			Assert.AreEqual(1, result.GetBaseUnitDamage(Contracts.v1.Constants.MilitaryType.Melee));
+			Assert.AreEqual(1, result.GetBaseUnitDamage(Contracts.v1.Constants.MilitaryType.Ranged));
+			Assert.AreEqual(1, result.GetBaseUnitDamage(Contracts.v1.Constants.MilitaryType.Siege));
 
 			Assert.AreEqual(1, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Melee));
 			Assert.AreEqual(1, result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Ranged));
@@ -72,13 +72,13 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 
 			Assert.AreEqual(result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Melee) 
 				* result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Melee)
-				, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Melee));
+				, result.GetBaseUnitDamage(Contracts.v1.Constants.MilitaryType.Melee));
 			Assert.AreEqual(result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Ranged)
 				* result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Ranged)
-				, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Ranged));
+				, result.GetBaseUnitDamage(Contracts.v1.Constants.MilitaryType.Ranged));
 			Assert.AreEqual(result.GetUnitCount(Contracts.v1.Constants.MilitaryType.Siege)
 				* result.GetUnitLevel(Contracts.v1.Constants.MilitaryType.Siege)
-				, result.GetUnitDamage(Contracts.v1.Constants.MilitaryType.Siege));
+				, result.GetBaseUnitDamage(Contracts.v1.Constants.MilitaryType.Siege));
 		}
 	}
 }

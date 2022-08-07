@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
@@ -23,10 +24,18 @@ namespace ProjectLevel.Tests.TestHelpers
 			mock.Setup(_ => _.BuildMilitary(It.Is<int>(level => level == buildMilitaryLevel)))
 				.Returns(GetMilitary(buildMilitaryLevel));
 
+			mock.Setup(_ => _.BuildMilitaryUnits(It.Is<int>(level => level == buildMilitaryLevel)))
+				.Returns(GetMilitaryUnits(buildMilitaryLevel));
+
 			return mock;
 		}
 
 		public static IMilitary GetMilitary(int level)
+		{
+			return new Military(GetMilitaryUnits(level));
+		}
+
+		public static IEnumerable<MilitaryUnit> GetMilitaryUnits(int level)
 		{
 			var militaryUnits = new List<MilitaryUnit>()
 			{
@@ -40,8 +49,8 @@ namespace ProjectLevel.Tests.TestHelpers
 				{
 					MilitaryType = MilitaryType.Ranged,
 					Count = level,
-					Level = level 
-				}, 
+					Level = level
+				},
 				new MilitaryUnit()
 				{
 					MilitaryType = MilitaryType.Siege,
@@ -50,7 +59,7 @@ namespace ProjectLevel.Tests.TestHelpers
 				},
 			};
 
-			return new Military(militaryUnits);
+			return militaryUnits;
 		}
 	}
 }

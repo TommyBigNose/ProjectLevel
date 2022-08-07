@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using Moq;
 using NUnit.Framework;
 using ProjectLevel.Contracts.v1;
 using ProjectLevel.Contracts.v1.Interfaces;
@@ -16,18 +17,21 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 {
 	public class ItemChestUnitTests
 	{
+		private Mock<IDataSource> _mockDataSource = MockDataSource.GetMockDataSource();
 		private IItemChest _sut;
 
 		[SetUp]
 		public void SetUp()
 		{
+			_mockDataSource = MockDataSource.GetMockDataSource();
 			_sut = new ItemChest();
 		}
 
 		[TearDown]
 		public void TearDown()
 		{
-
+			_mockDataSource = null;
+			_sut = null;
 		}
 
 		[TestCase(false, false, MilitaryType.Melee)]
@@ -39,7 +43,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void ContainsItemsForMilitaryType(bool useLoot, bool expected, MilitaryType militaryType)
 		{
 			// Arrange
-			if(useLoot) _sut = new ItemChest(new TestDataSource().GetAvailableLoot());
+			if(useLoot) _sut = new ItemChest(_mockDataSource.Object.GetAvailableLoot());
 
 			// Act
 			var result = _sut.ContainsItemsForMilitaryType(militaryType);
@@ -57,7 +61,7 @@ namespace ProjectLevel.Tests.Unit.v1.Implementations
 		public void GetStatsForMilitaryType(bool useLoot, MilitaryType militaryType)
 		{
 			// Arrange
-			if (useLoot) _sut = new ItemChest(new TestDataSource().GetAvailableLoot());
+			if (useLoot) _sut = new ItemChest(_mockDataSource.Object.GetAvailableLoot());
 
 			// Act
 			var result = _sut.GetStatsForMilitaryType(militaryType);

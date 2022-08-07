@@ -115,9 +115,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public int GetMilitaryDamage(MilitaryType militaryType)
 		{
-			float ratio = 1.0f + _civilization.ItemChest.GetStatsForMilitaryType(militaryType).Sum(_ => _.DamageRatio);
-			double result = Math.Round(_civilization.Military.GetUnitDamage(militaryType) * ratio);
-			return (int)result;
+			return _civilization.Military.GetTotalUnitDamage(militaryType, _itemChest);
 		}
 
 		public float GetMilitaryActionBarValue(MilitaryType militaryType)

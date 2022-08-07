@@ -13,7 +13,30 @@ namespace ProjectLevel.Services.v1.Implementations
 	{
 		public IMilitary BuildInitialMilitary()
 		{
-			var militaryUnits = new List<MilitaryUnit>()
+			return new Military(BuildMilitaryUnits(1));
+		}
+
+		public IMilitary BuildMilitary(int level)
+		{
+			IMilitary military = BuildInitialMilitary();
+
+			for (int i = 1; i < level; i++)
+			{
+				military.UpgradeUnitCount(MilitaryType.Melee);
+				military.UpgradeUnitCount(MilitaryType.Ranged);
+				military.UpgradeUnitCount(MilitaryType.Siege);
+
+				military.UpgradeUnitLevel(MilitaryType.Melee);
+				military.UpgradeUnitLevel(MilitaryType.Ranged);
+				military.UpgradeUnitLevel(MilitaryType.Siege);
+			}
+
+			return military;
+		}
+
+		public IEnumerable<MilitaryUnit> BuildMilitaryUnits(int level)
+		{
+			IEnumerable<MilitaryUnit> militaryUnits = new List<MilitaryUnit>()
 			{
 				new MilitaryUnit()
 				{
@@ -35,25 +58,7 @@ namespace ProjectLevel.Services.v1.Implementations
 				},
 			};
 
-			return new Military(militaryUnits);
-		}
-
-		public IMilitary BuildMilitary(int level)
-		{
-			IMilitary military = BuildInitialMilitary();
-
-			for (int i = 1; i < level; i++)
-			{
-				military.UpgradeUnitCount(MilitaryType.Melee);
-				military.UpgradeUnitCount(MilitaryType.Ranged);
-				military.UpgradeUnitCount(MilitaryType.Siege);
-
-				military.UpgradeUnitLevel(MilitaryType.Melee);
-				military.UpgradeUnitLevel(MilitaryType.Ranged);
-				military.UpgradeUnitLevel(MilitaryType.Siege);
-			}
-
-			return military;
+			return militaryUnits;
 		}
 	}
 }

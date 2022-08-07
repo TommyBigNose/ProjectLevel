@@ -23,7 +23,27 @@ namespace ProjectLevel.Tests.TestHelpers
 
 			mock.Setup(_ => _.ItemChest)
 				.Returns(new ItemChest());
-				//.Returns(It.IsAny<IItemChest>);
+
+			mock.Setup(_ => _.TriggerAllActionBars());
+
+			return mock;
+		}
+
+		public static Mock<ICivilization> GetMockCivilization(int initialGold, int initialMilitaryLevel, bool canUpgradeEconomy = false)
+		{
+			var mock = new Mock<ICivilization>();
+
+			IEconomy economy = MockEconomy.GetMockEconomy(initialGold, canUpgradeEconomy).Object;
+
+			mock.Setup(_ => _.Economy)
+				.Returns(economy);
+
+			mock.Setup(_ => _.Military)
+				.Returns(MockMilitaryFactory.GetMilitary(initialMilitaryLevel));
+
+			IItemChest itemChest = new ItemChest();
+			mock.Setup(_ => _.ItemChest)
+				.Returns(itemChest);
 
 			mock.Setup(_ => _.TriggerAllActionBars());
 

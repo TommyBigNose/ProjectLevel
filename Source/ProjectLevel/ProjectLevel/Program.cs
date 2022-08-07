@@ -16,6 +16,7 @@ builder.Services.AddSingleton<IMilitaryFactory, MilitaryFactory>();
 builder.Services.AddSingleton<IEconomy, Economy>();
 builder.Services.AddSingleton<IDataSource, LocalDataSource>();
 builder.Services.AddSingleton<ICivilization, Civilization>();
+builder.Services.AddScoped<IMilitary, Military>();
 builder.Services.AddScoped<CommandManager>();
 
 await builder.Build().RunAsync();

@@ -33,7 +33,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public int CalculateDamage(int attackDamage, MilitaryType militaryType)
 		{
-			int defense = Military.GetUnitDamage(militaryType);
+			int defense = Military.GetBaseUnitDamage(militaryType);
 			int output = (attackDamage - defense > 0) ? (attackDamage - defense) : 0;
 			return output;
 		}

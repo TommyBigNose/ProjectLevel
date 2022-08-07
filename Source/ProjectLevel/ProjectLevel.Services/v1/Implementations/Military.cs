@@ -12,11 +12,21 @@ namespace ProjectLevel.Services.v1.Implementations
 {
 	public class Military : IMilitary
 	{
-		private readonly List<MilitaryUnit> _militaryUnitList;
+		private IEnumerable<MilitaryUnit> _militaryUnitList;
 
-		public Military(List<MilitaryUnit> militaryUnitList)
+		public Military()
+		{
+			_militaryUnitList = new List<MilitaryUnit>();
+		}
+
+		public Military(IEnumerable<MilitaryUnit> militaryUnitList)
 		{
 			_militaryUnitList = militaryUnitList;
+		}
+
+		public void SetupMilitaryUnits(IEnumerable<MilitaryUnit> militaryUnits)
+		{
+			_militaryUnitList = militaryUnits;
 		}
 
 		public int GetUnitCount(MilitaryType militaryType)
@@ -29,9 +39,16 @@ namespace ProjectLevel.Services.v1.Implementations
 			return _militaryUnitList.First(_ => _.MilitaryType == militaryType).Level;
 		}
 
-		public int GetUnitDamage(MilitaryType militaryType)
+		public int GetBaseUnitDamage(MilitaryType militaryType)
 		{
 			return GetUnitCount(militaryType) * GetUnitLevel(militaryType);
+		}
+
+		public int GetTotalUnitDamage(MilitaryType militaryType, IItemChest itemChest)
+		{
+			float ratio = 1.0f + itemChest.GetStatsForMilitaryType(militaryType).Sum(_ => _.DamageRatio);
+			double result = Math.Round(GetBaseUnitDamage(militaryType) * ratio);
+			return (int)result;
 		}
 
 		public int RequiredGoldToLevelUp(MilitaryType militaryType)

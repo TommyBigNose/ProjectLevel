@@ -42,19 +42,19 @@ namespace ProjectLevel.Services.v1.Implementations
 				{
 					MilitaryType = MilitaryType.Melee,
 					Count = 1,
-					Level = 1
+					Level = level
 				},
 				new MilitaryUnit()
 				{
 					MilitaryType = MilitaryType.Ranged,
 					Count = 1,
-					Level = 1
+					Level = level
 				},
 				new MilitaryUnit()
 				{
 					MilitaryType = MilitaryType.Siege,
 					Count = 1,
-					Level = 1
+					Level = level
 				},
 			};
 

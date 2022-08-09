@@ -11,12 +11,18 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(_ => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddSingleton(_ => new System.Timers.Timer());
-builder.Services.AddSingleton<IGame, Game>();
-builder.Services.AddSingleton<IMilitaryFactory, MilitaryFactory>();
-builder.Services.AddSingleton<IEconomy, Economy>();
-builder.Services.AddSingleton<IDataSource, LocalDataSource>();
-builder.Services.AddSingleton<ICivilization, Civilization>();
-builder.Services.AddScoped<IMilitary, Military>();
+
+builder.Services.AddScoped<IMilitaryFactory, MilitaryFactory>();
+builder.Services.AddScoped<IBattleReadyFactory, BattleReadyFactory>();
+builder.Services.AddScoped<IDataSource, LocalDataSource>();
+
+builder.Services.AddScoped<IEconomy, Economy>();
+builder.Services.AddScoped<IMilitary>(_ => new Military());
+builder.Services.AddScoped<IItemChest, ItemChest>();
+builder.Services.AddScoped<ICivilization, Civilization>();
+
+builder.Services.AddScoped<IGame, Game>();
+
 builder.Services.AddScoped<CommandManager>();
 
 await builder.Build().RunAsync();

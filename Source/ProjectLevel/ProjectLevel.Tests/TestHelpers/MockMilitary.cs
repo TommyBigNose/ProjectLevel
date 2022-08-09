@@ -17,6 +17,8 @@ namespace ProjectLevel.Tests.TestHelpers
 		public static Mock<IMilitary> GetMockMilitary(int initialCount, int initialLevel)
 		{
 			var mock = new Mock<IMilitary>();
+			
+			ActionBar actionBar = new();
 
 			mock.Setup(_ => _.SetupMilitaryUnits(It.IsAny<IEnumerable<MilitaryUnit>>()));
 
@@ -43,7 +45,7 @@ namespace ProjectLevel.Tests.TestHelpers
 			mock.Setup(_ => _.UpgradeUnitLevel(It.IsAny<MilitaryType>()));
 
 			mock.Setup(_ => _.GetUnitActionBar(It.IsAny<MilitaryType>()))
-				.Returns(It.IsAny<ActionBar>());
+				.Returns(actionBar);
 
 			mock.Setup(_ => _.TriggerAllActionBars(It.IsAny<IItemChest>()));
 

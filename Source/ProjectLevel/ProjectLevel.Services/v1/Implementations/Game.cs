@@ -14,17 +14,18 @@ namespace ProjectLevel.Services.v1.Implementations
 	{
 		private readonly IDataSource _dataSource;
 		private readonly IMilitaryFactory _militaryFactory;
+		private readonly IBattleReadyFactory _battleReadyFactory;
 		private readonly IItemChest _itemChest;
 		private readonly ICivilization _civilization;
 		private IBattleReady _enemyTown;
 
-		public Game(IDataSource dataSource, ICivilization civilization, IMilitaryFactory militaryFactory)
+		public Game(IDataSource dataSource, ICivilization civilization, IMilitaryFactory militaryFactory, IBattleReadyFactory battleReadyFactory, IItemChest itemChest)
 		{
 			_dataSource = dataSource;
-			_militaryFactory = militaryFactory;
-			_itemChest = new ItemChest();
 			_civilization = civilization;
-			//_civilization = new Civilization(enconomy, _militaryFactory.BuildInitialMilitary(), _itemChest);
+			_militaryFactory = militaryFactory;
+			_battleReadyFactory = battleReadyFactory;
+			_itemChest = itemChest;
 			_enemyTown = GetNewEnemyTown(1);
 		}
 
@@ -154,8 +155,7 @@ namespace ProjectLevel.Services.v1.Implementations
 
 		public IBattleReady GetNewEnemyTown(int level)
 		{
-			BattleReadyEnemyTown enemy = new("Test Town", level, GetAvailableLoot().First(), _militaryFactory.BuildMilitary(level));
-			return enemy;
+			return _battleReadyFactory.BuildBattleReady(level);
 		}
 
 		public void SetCurrentEnemyTown(IBattleReady enemyTown)
